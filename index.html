@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Hanken+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #0a0b0f; color: #e9e6dd; font-family: 'Hanken Grotesk', system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: #7a98e8; text-decoration: none; }
+  a:hover { color: #9db4f0; }
+  img { display: block; max-width: 100%; }
+  ::selection { background: #7a98e8; color: #0a0b0f; }
+  @keyframes wp-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes wp-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-22px); } }
+  @keyframes wp-pulse { 0%,100% { opacity: .5; } 50% { opacity: .9; } }
+  @keyframes wp-fadeup { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes wp-detailin { from { opacity: 0; transform: translateY(20px) scale(.985); } to { opacity: 1; transform: none; } }
+  @keyframes wp-gridin { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  @keyframes wp-spin-cw { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes wp-spin-ccw { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+  @keyframes wp-hub { 0%,100% { transform: translate(-50%,-50%) scale(1); opacity: .9; } 50% { transform: translate(-50%,-50%) scale(1.08); opacity: .5; } }
+  @keyframes wp-bgfade { from { opacity: .2; transform: scale(1.03); } to { opacity: 1; transform: scale(1); } }
+  @keyframes wp-momprog { from { width: 0%; } to { width: 100%; } }
+  @keyframes wp-kenburns { from { transform: scale(1.02); } to { transform: scale(1.11); } }
+  @keyframes wp-verifypulse { 0%, 100% { box-shadow: 0 0 7px rgba(52,211,133,.75), 0 0 0 0 rgba(52,211,133,.5); } 50% { box-shadow: 0 0 13px rgba(52,211,133,1), 0 0 0 4px rgba(52,211,133,0); } }
+  @keyframes wp-shine { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
+  @keyframes wp-statglow { 0%, 100% { opacity: .32; transform: translate(-50%,-50%) scale(.88); } 50% { opacity: .72; transform: translate(-50%,-50%) scale(1.12); } }
+  @keyframes wp-livedot { 0% { box-shadow: 0 0 0 0 rgba(122,152,232,.7); } 70%, 100% { box-shadow: 0 0 0 7px rgba(122,152,232,0); } }
+  @keyframes wp-cardsheen { 0% { transform: translateX(-150%) skewX(-16deg); } 55%, 100% { transform: translateX(340%) skewX(-16deg); } }
+  @keyframes wp-ringpulse { 0%, 100% { box-shadow: inset 0 0 0 1px rgba(122,152,232,.32), inset 0 0 22px rgba(122,152,232,.10); } 50% { box-shadow: inset 0 0 0 1px rgba(122,152,232,.7), inset 0 0 34px rgba(122,152,232,.26); } }
+</style>
+</helmet>
+
+<div style="position:relative; width:100%; overflow:hidden;">
+
+<sc-if value="{{ showGlow }}" hint-placeholder-val="{{ true }}">
+<div style="position:fixed; inset:0; pointer-events:none; z-index:0;">
+  <div style="position:absolute; top:-10%; left:-8%; width:46vw; height:46vw; border-radius:50%; background:radial-gradient(circle, rgba(140,166,140,.16), transparent 65%); filter:blur(30px); animation:wp-float 16s ease-in-out infinite;"></div>
+  <div style="position:absolute; bottom:-14%; right:-6%; width:40vw; height:40vw; border-radius:50%; background:radial-gradient(circle, rgba(122,152,232,.13), transparent 65%); filter:blur(30px); animation:wp-float 20s ease-in-out infinite reverse;"></div>
+</div>
+</sc-if>
+
+<sc-if value="{{ showParticles }}" hint-placeholder-val="{{ true }}">
+<canvas data-bgcanvas style="position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; opacity:.75;"></canvas>
+</sc-if>
+
+<sc-if value="{{ showGrain }}" hint-placeholder-val="{{ true }}">
+<div style="position:fixed; inset:0; pointer-events:none; z-index:60; opacity:.05; mix-blend-mode:overlay; background-image:url('data:image/svg+xml;utf8,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22160%22&gt;&lt;filter id=%22n%22&gt;&lt;feTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%222%22/&gt;&lt;/filter&gt;&lt;rect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/&gt;&lt;/svg&gt;');"></div>
+</sc-if>
+
+<!-- ===================== NAV ===================== -->
+<nav style="position:fixed; top:0; left:0; right:0; z-index:50; display:flex; align-items:center; justify-content:space-between; padding:20px 40px; backdrop-filter:blur(14px); background:linear-gradient(to bottom, rgba(10,11,15,.82), rgba(10,11,15,.25)); border-bottom:1px solid rgba(255,255,255,.06);">
+  <a href="https://willpowerhq.com" style="display:flex; align-items:center;">
+    <img src="https://willpowerhq.com/assets/logos/willpower-logo-white.png" alt="Willpower" style="height:26px; width:auto;">
+  </a>
+  <div style="display:flex; align-items:center; gap:34px;">
+    <div style="display:flex; align-items:center; gap:28px; font-size:14px; font-weight:500; letter-spacing:.01em;" data-nav-links="">
+      <a href="#about" style="color:#c9c6bd;">The Room</a>
+      <a href="#inside" style="color:#c9c6bd;">Watch</a>
+      <a href="#why" style="color:#c9c6bd;">Why Speak</a>
+      <a href="#speakers" style="color:#c9c6bd;">Past Speakers</a>
+      <a href="#vetting" style="color:#c9c6bd;">Vetting</a>
+    </div>
+    <a data-cta="primary" href="#apply" style="display:inline-flex; align-items:center; gap:8px; padding:11px 22px; border-radius:999px; background:linear-gradient(135deg,#7d99e6,#4d69ba); color:#f4f1e9; font-weight:600; font-size:14px;" style-hover="background:linear-gradient(135deg,#8ea9f0,#5e7bcb);">I'm Interested →</a>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<section style="position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; z-index:1;">
+  <video autoplay="" muted="" loop="" playsinline="" poster="https://willpowerhq.com/assets/photos/wh26-venue-wide.jpg" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;">
+    <source src="https://willpowerhq.com/assets/video/wh26-hero-loop.mp4" type="video/mp4">
+  </video>
+  <div style="position:absolute; inset:0; z-index:1; background:radial-gradient(ellipse 80% 60% at center, rgba(10,11,15,.62), transparent 72%), linear-gradient(to top, #0a0b0f 3%, rgba(10,11,15,.5) 45%, rgba(10,11,15,.5) 72%, rgba(10,11,15,.72) 100%);"></div>
+  <div style="position:relative; z-index:2; width:100%; max-width:1040px; margin:0 auto; padding:150px 40px 80px; display:flex; flex-direction:column; align-items:center; text-align:center;">
+    <div style="display:flex; justify-content:center; align-items:center; gap:12px; font-size:12px; font-weight:600; letter-spacing:.24em; text-transform:uppercase; color:#7a98e8; margin-bottom:26px;">
+      <span style="width:28px; height:1px; background:#7a98e8; opacity:.7;"></span>
+      Speaker Invitation · 2026–27 Season
+      <span style="width:28px; height:1px; background:#7a98e8; opacity:.7;"></span>
+    </div>
+    <h1 style="font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(36px,4.9vw,60px); line-height:1.08; letter-spacing:-.01em; margin:0 0 26px; max-width:none; color:#f4f1e9;">
+      Take the stage the<br>category-defining <em style="font-style:italic; color:#7a98e8;">brands</em> trust.
+    </h1>
+    <p style="font-size:clamp(17px,1.5vw,20px); line-height:1.6; color:#cbc7bd; max-width:74ch; margin:0 auto 40px;">
+      Willpower curates invite-only rooms of $10M–$1B+ operators in wellness, consumer, and performance. We're inviting a select few speakers to lead the room.
+    </p>
+    <div style="display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:16px; margin-bottom:54px;">
+      <a data-cta="primary" href="#apply" style="display:inline-flex; align-items:center; gap:10px; padding:16px 32px; border-radius:999px; background:linear-gradient(135deg,#7d99e6,#4d69ba); color:#f4f1e9; font-weight:600; font-size:16px;" style-hover="background:linear-gradient(135deg,#8ea9f0,#5e7bcb);">I'm Interested →</a>
+      <a data-cta="ghost" href="#about" style="display:inline-flex; align-items:center; gap:10px; padding:16px 30px; border-radius:999px; border:1px solid rgba(255,255,255,.22); color:#f4f1e9; font-weight:500; font-size:16px;" style-hover="border-color:rgba(255,255,255,.5); background:rgba(255,255,255,.04);">See the room</a>
+    </div>
+    <div style="display:flex; flex-wrap:nowrap; justify-content:center; gap:16px; padding-top:36px; border-top:1px solid rgba(255,255,255,.1);">
+      <div onMouseEnter="{{ onStatEnter }}" onMouseLeave="{{ onStatLeave }}" style="position:relative; overflow:hidden; flex:1 1 0; min-width:0; max-width:320px; padding:24px 22px; border-radius:16px; border:1px solid rgba(255,255,255,.08); background:linear-gradient(160deg, rgba(255,255,255,.045), rgba(255,255,255,.005)); transition:transform .45s cubic-bezier(.2,.7,.2,1), border-color .45s ease, background .45s ease, box-shadow .45s ease; will-change:transform;">
+        <div data-bar="" style="position:absolute; top:0; left:0; height:2px; width:100%; background:linear-gradient(90deg,#7d99e6,#4d69ba); transform:scaleX(0); transform-origin:left; transition:transform .55s cubic-bezier(.2,.7,.2,1);"></div>
+        <div data-glow="" style="position:absolute; top:-40%; right:-30%; width:60%; height:120%; border-radius:50%; background:radial-gradient(circle, rgba(122,152,232,.28), transparent 70%); opacity:0; transition:opacity .5s ease; pointer-events:none;"></div>
+        <div data-num="" data-count-to="250" data-suffix="+" style="position:relative; font-family:'Instrument Serif',serif; font-size:48px; line-height:1; color:#f4f1e9; margin-bottom:10px; transition:color .35s ease;">250+</div>
+        <div style="position:relative; font-size:14.5px; font-weight:600; color:#e0dcd2; margin-bottom:4px;">Operators in the room</div>
+        <div data-sub="" style="position:relative; font-size:11.5px; letter-spacing:.02em; color:#87897f; white-space:nowrap; transition:color .35s ease;">WH26 · SXSW · sold out</div>
+      </div>
+      <div onMouseEnter="{{ onStatEnter }}" onMouseLeave="{{ onStatLeave }}" style="position:relative; overflow:hidden; flex:1 1 0; min-width:0; max-width:320px; padding:24px 22px; border-radius:16px; border:1px solid rgba(255,255,255,.08); background:linear-gradient(160deg, rgba(255,255,255,.045), rgba(255,255,255,.005)); transition:transform .45s cubic-bezier(.2,.7,.2,1), border-color .45s ease, background .45s ease, box-shadow .45s ease; will-change:transform;">
+        <div data-bar="" style="position:absolute; top:0; left:0; height:2px; width:100%; background:linear-gradient(90deg,#7d99e6,#4d69ba); transform:scaleX(0); transform-origin:left; transition:transform .55s cubic-bezier(.2,.7,.2,1);"></div>
+        <div data-glow="" style="position:absolute; top:-40%; right:-30%; width:60%; height:120%; border-radius:50%; background:radial-gradient(circle, rgba(122,152,232,.28), transparent 70%); opacity:0; transition:opacity .5s ease; pointer-events:none;"></div>
+        <div data-num="" data-count-to="45" data-suffix="+" style="position:relative; font-family:'Instrument Serif',serif; font-size:48px; line-height:1; color:#f4f1e9; margin-bottom:10px; transition:color .35s ease;">45+</div>
+        <div style="position:relative; font-size:14.5px; font-weight:600; color:#e0dcd2; margin-bottom:4px;">Brand activations</div>
+        <div data-sub="" style="position:relative; font-size:11.5px; letter-spacing:.02em; color:#87897f; white-space:nowrap; transition:color .35s ease;">Sponsors · pop-ups · 2× YoY</div>
+      </div>
+      <div onMouseEnter="{{ onStatEnter }}" onMouseLeave="{{ onStatLeave }}" style="position:relative; overflow:hidden; flex:1 1 0; min-width:0; max-width:320px; padding:24px 22px; border-radius:16px; border:1px solid rgba(122,152,232,.3); background:linear-gradient(160deg, rgba(122,152,232,.08), rgba(122,152,232,.012)); transition:transform .45s cubic-bezier(.2,.7,.2,1), border-color .45s ease, background .45s ease, box-shadow .45s ease; will-change:transform;">
+        <div data-bar="" style="position:absolute; top:0; left:0; height:2px; width:100%; background:linear-gradient(90deg,#7d99e6,#4d69ba); transform:scaleX(0); transform-origin:left; transition:transform .55s cubic-bezier(.2,.7,.2,1);"></div>
+        <div data-glow="" style="position:absolute; top:-40%; right:-30%; width:60%; height:120%; border-radius:50%; background:radial-gradient(circle, rgba(122,152,232,.28), transparent 70%); opacity:0; transition:opacity .5s ease; pointer-events:none;"></div>
+        <div aria-hidden="true" style="position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(100deg,#7d99e6,#eef1fb,#7d99e6); background-size:200% auto; animation:wp-shine 4.5s linear infinite; pointer-events:none;"></div>
+        <div aria-hidden="true" style="position:absolute; inset:0; border-radius:16px; animation:wp-ringpulse 3.2s ease-in-out infinite; pointer-events:none;"></div>
+        <div aria-hidden="true" style="position:absolute; top:0; bottom:0; left:0; width:42%; background:linear-gradient(100deg, transparent, rgba(205,216,255,.18), transparent); transform:translateX(-150%) skewX(-16deg); animation:wp-cardsheen 5.5s ease-in-out infinite; pointer-events:none;"></div>
+        <div aria-hidden="true" style="position:absolute; top:34%; left:46px; width:140px; height:140px; transform:translate(-50%,-50%); background:radial-gradient(circle, rgba(122,152,232,.5), transparent 70%); animation:wp-statglow 3.6s ease-in-out infinite; pointer-events:none;"></div>
+        <div data-num="" data-speakers-num="" data-count-to="46" data-suffix="" style="position:relative; font-family:'Instrument Serif',serif; font-size:52px; line-height:1; background:linear-gradient(100deg,#d3ddf7 0%,#7d99e6 26%,#eef1fb 50%,#7d99e6 74%,#d3ddf7 100%); background-size:200% auto; -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; animation:wp-shine 4.5s linear infinite; filter:drop-shadow(0 3px 20px rgba(122,152,232,.5)); margin-bottom:10px;">46</div>
+        <div style="position:relative; display:inline-flex; align-items:center; gap:7px; font-size:14.5px; font-weight:600; color:#e6eafa; margin-bottom:4px;">
+          <span aria-hidden="true" style="width:7px; height:7px; border-radius:50%; background:#7d99e6; animation:wp-livedot 1.9s ease-out infinite;"></span>
+          Speakers &amp; counting
+        </div>
+        <div data-sub="" style="position:relative; font-size:11.5px; letter-spacing:.02em; color:#9aa2bd; white-space:nowrap; transition:color .35s ease;">WH · Catalyst · Sports</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TRUST MARQUEE ===================== -->
+<section style="position:relative; z-index:1; padding:44px 0; border-top:1px solid rgba(255,255,255,.06); border-bottom:1px solid rgba(255,255,255,.06); background:rgba(12,13,18,.82);">
+  <p style="text-align:center; font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:#7d8079; margin:0 0 30px;">Our past speakers built these brands</p>
+  <div style="position:relative; overflow:hidden; -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent); mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);">
+    <div style="display:flex; width:max-content; gap:60px; align-items:center; animation:wp-marquee 42s linear infinite;">
+      <sc-for list="{{ logosLoop }}" as="logo" hint-placeholder-count="14">
+        <img src="{{ logo }}" alt="brand" style="height:26px; width:auto; opacity:.62; filter:brightness(0) invert(1);" style-hover="opacity:1;">
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WHAT IT IS / THE ROOM ===================== -->
+<section id="about" style="position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:96px 40px;">
+  <div data-reveal="" style="display:flex; justify-content:center; align-items:center; gap:12px; font-size:12px; font-weight:600; letter-spacing:.24em; text-transform:uppercase; color:#7a98e8; margin-bottom:20px;">
+    <span style="width:28px; height:1px; background:#7a98e8; opacity:.7;"></span>The Room<span style="width:28px; height:1px; background:#7a98e8; opacity:.7;"></span>
+  </div>
+  <h2 data-reveal="" style="font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(36px,4.8vw,64px); line-height:1.06; letter-spacing:-.01em; margin:0 auto 48px; max-width:none; color:#f4f1e9; text-align:center;">
+    Not a conference. Three curated series,<br><em style="font-style:italic; color:#7a98e8;">one community.</em>
+  </h2>
+  <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:22px;">
+    <sc-for list="{{ series }}" as="s" hint-placeholder-count="3">
+      <div data-reveal="" data-reveal-delay="{{ s.delay }}" data-accent="{{ s.accent }}" data-rgb="{{ s.rgb }}" onMouseEnter="{{ onSeriesEnter }}" onMouseLeave="{{ onSeriesLeave }}" style="position:relative; border-radius:18px; overflow:hidden; min-height:380px; display:flex; flex-direction:column; justify-content:flex-end; border:1px solid rgba(255,255,255,.08); cursor:default; transition:transform .5s cubic-bezier(.2,.7,.2,1), border-color .5s ease, box-shadow .5s ease;">
+        <img data-simg src="{{ s.img }}" alt="{{ s.title }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; filter:brightness(.72) saturate(.95); transition:transform .9s cubic-bezier(.2,.7,.2,1), filter .6s ease;">
+        <div style="position:absolute; inset:0; z-index:1; background:linear-gradient(to top, rgba(8,9,13,.95) 14%, rgba(8,9,13,.3) 60%, rgba(8,9,13,.45));"></div>
+        <div data-stint style="position:absolute; inset:0; z-index:1; background:{{ s.tint }};"></div>
+        <span data-sbar style="position:absolute; top:0; left:0; right:0; height:3px; z-index:3; background:{{ s.barGrad }}; transform:scaleX(0); transform-origin:left; transition:transform .55s cubic-bezier(.2,.7,.2,1);"></span>
+        <div style="position:relative; z-index:2; padding:30px;">
+          <div style="font-size:11px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:{{ s.accent }}; margin-bottom:12px;">{{ s.tag }}</div>
+          <h3 style="font-family:'Instrument Serif',serif; font-weight:400; font-size:30px; line-height:1.05; margin:0; color:#f4f1e9;">{{ s.title }}</h3>
+          <div data-sdesc style="max-height:0; opacity:0; overflow:hidden; transition:max-height .55s cubic-bezier(.2,.7,.2,1), opacity .45s ease;">
+            <p style="font-size:14.5px; line-height:1.55; color:#c9c5bc; margin:12px 0 0;">{{ s.desc }}</p>
+          </div>
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:16px;">
+            <span style="font-size:12px; letter-spacing:.06em; color:#8b8f88; text-transform:uppercase;">{{ s.where }}</span>
+            <span data-sview style="display:inline-flex; align-items:center; gap:6px; font-size:12.5px; font-weight:600; color:{{ s.accent }}; opacity:0; transform:translateX(-6px); transition:opacity .4s ease, transform .4s ease;">Explore <span style="font-size:14px;">→</span></span>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+<!-- ===================== WHY SPEAK ===================== -->
+<section id="why" style="position:relative; z-index:1; margin-top:60px; background:rgba(12,13,18,.82); border-top:1px solid rgba(255,255,255,.06); border-bottom:1px solid rgba(255,255,255,.06);">
+  <div style="max-width:1200px; margin:0 auto; padding:130px 40px;">
+    <div style="display:grid; grid-template-columns:minmax(0,0.9fr) minmax(0,1.1fr); gap:70px; align-items:start;">
+      <div style="position:sticky; top:120px;">
+        <div data-reveal="" style="display:flex; align-items:center; gap:12px; font-size:12px; font-weight:600; letter-spacing:.24em; text-transform:uppercase; color:#7a98e8; margin-bottom:26px;">
+          <span style="width:28px; height:1px; background:#7a98e8; opacity:.7;"></span>Why Speak
+        </div>
+        <h2 data-reveal="" style="font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(34px,4.4vw,58px); line-height:1.05; letter-spacing:-.01em; margin:0 0 22px; color:#f4f1e9;">
+          The rare room that's <em style="font-style:italic; color:#7a98e8;">worth</em> showing up for.
+        </h2>
+        <p data-reveal="" style="font-size:18px; line-height:1.6; color:#b7b3aa; margin:0 0 30px; max-width:44ch;">
+          Speakers leave with real relationships they actually keep — and a lineup credit in company that means something. Here's what you're stepping into.
+        </p>
+        <a data-reveal="" data-cta="primary" href="#apply" style="display:inline-flex; align-items:center; gap:10px; padding:15px 30px; border-radius:999px; background:linear-gradient(135deg,#7d99e6,#4d69ba); color:#f4f1e9; font-weight:600; font-size:15px;" style-hover="background:linear-gradient(135deg,#8ea9f0,#5e7bcb);">Request your slot →</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:18px;">
+        <sc-for list="{{ benefits }}" as="b" hint-placeholder-count="4">
+          <div data-reveal="" data-reveal-delay="{{ b.delay }}" onMouseEnter="{{ onBenefitEnter }}" onMouseLeave="{{ onBenefitLeave }}" style="padding:26px 28px; border-radius:16px; background:rgba(255,255,255,.025); border:1px solid rgba(255,255,255,.07); cursor:default; transition:background .4s ease, border-color .4s ease, box-shadow .4s ease;">
+            <div style="display:flex; align-items:center; gap:22px;">
+              <div data-bnum="" style="font-family:'Instrument Serif',serif; font-size:30px; color:#7a98e8; line-height:1; min-width:44px; transition:color .35s ease;">{{ b.n }}</div>
+              <h3 style="flex:1; font-size:20px; font-weight:600; margin:0; color:#f4f1e9;">{{ b.title }}</h3>
+              <span data-bicon="" style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; font-size:24px; font-weight:300; color:#6f7280; line-height:1; transition:transform .45s cubic-bezier(.2,.7,.2,1), color .35s ease;">+</span>
+            </div>
+            <div data-bdesc="" style="max-height:0; opacity:0; overflow:hidden; transition:max-height .5s cubic-bezier(.2,.7,.2,1), opacity .4s ease;">
+              <p style="font-size:15px; line-height:1.6; color:#a9a59c; margin:16px 0 0; padding-left:66px;">{{ b.desc }}</p>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- (stats band removed — consolidated into the hero stat cards) -->
+
+<!-- ===================== PAST EVENT FILMS (video showcase) ===================== -->
+<section id="inside" style="position:relative; z-index:1; max-width:1240px; margin:0 auto; padding:110px 40px 60px;">
+  <div data-reveal="" style="display:flex; align-items:center; gap:12px; font-size:12px; font-weight:600; letter-spacing:.24em; text-transform:uppercase; color:#7a98e8; margin-bottom:26px;">
+    <span style="width:28px; height:1px; background:#7a98e8; opacity:.7;"></span>Watch the Room
+  </div>
+  <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:24px; margin-bottom:34px;">
+    <h2 data-reveal="" style="font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(34px,4.6vw,62px); line-height:1.05; letter-spacing:-.01em; margin:0; max-width:24ch; color:#f4f1e9;">See what a Willpower <em style="font-style:italic; color:#7a98e8;">day</em><br>feels like.</h2>
+    <p data-reveal="" style="font-size:16px; line-height:1.6; color:#a9a59c; max-width:40ch; margin:0;">Films from past events across our three series. Pick a room and press play — every clip opens on YouTube.</p>
+  </div>
+
+  <!-- CATEGORY TABS -->
+  <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:26px;">
+    <button data-vidfilter="all" onClick="{{ onVidFilter }}" style="padding:9px 18px; border-radius:999px; border:1px solid transparent; background:linear-gradient(135deg,#7d99e6,#4d69ba); color:#fff; font-family:inherit; font-size:13.5px; font-weight:600; cursor:pointer; transition:all .3s ease;">All Films</button>
+    <button data-vidfilter="catalyst" onClick="{{ onVidFilter }}" style="padding:9px 18px; border-radius:999px; border:1px solid rgba(255,255,255,.14); background:transparent; color:#a9a59c; font-family:inherit; font-size:13.5px; font-weight:600; cursor:pointer; transition:all .3s ease;">Catalyst Series</button>
+    <button data-vidfilter="sports" onClick="{{ onVidFilter }}" style="padding:9px 18px; border-radius:999px; border:1px solid rgba(255,255,255,.14); background:transparent; color:#a9a59c; font-family:inherit; font-size:13.5px; font-weight:600; cursor:pointer; transition:all .3s ease;">World of Sports</button>
+    <button data-vidfilter="wh" onClick="{{ onVidFilter }}" style="padding:9px 18px; border-radius:999px; border:1px solid rgba(255,255,255,.14); background:transparent; color:#a9a59c; font-family:inherit; font-size:13.5px; font-weight:600; cursor:pointer; transition:all .3s ease;">Wellness House</button>
+  </div>
+
+  <!-- VIDEO GRID -->
+  <div data-vidgrid style="display:grid; grid-template-columns:repeat(3,1fr); gap:18px; animation:wp-gridin .5s cubic-bezier(.2,.7,.2,1);">
+    <sc-for list="{{ gridVideos }}" as="v" hint-placeholder-count="6">
+      <a data-vidcard="" href="{{ v.url }}" target="_blank" rel="noopener" data-ytid="{{ v.ytid }}" data-vtitle="{{ v.title }}" data-vdate="{{ v.date }}" data-vloc="{{ v.location }}" data-vcat="{{ v.catLabel }}" onClick="{{ onVidClick }}" onMouseEnter="{{ onVidEnter }}" onMouseLeave="{{ onVidLeave }}" style="position:relative; display:flex; flex-direction:column; border-radius:16px; overflow:hidden; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); text-decoration:none; cursor:pointer; transition:transform .45s cubic-bezier(.2,.7,.2,1), border-color .45s ease, box-shadow .45s ease;">
+        <div style="position:relative; aspect-ratio:16/9; overflow:hidden;">
+          <img data-vidimg="" src="{{ v.img }}" alt="{{ v.title }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(.64) saturate(.88); transition:transform .6s cubic-bezier(.2,.7,.2,1), filter .5s ease;">
+          <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(6,7,11,.72) 4%, rgba(6,7,11,.05) 46%);"></div>
+          <span style="position:absolute; top:12px; left:12px; display:inline-flex; align-items:center; padding:5px 11px; border-radius:999px; background:{{ v.tagBg }}; border:1px solid {{ v.tagBorder }}; backdrop-filter:blur(6px); font-size:10.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#eef2ff;">{{ v.catLabel }}</span>
+          <span data-vidplay="" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) scale(.85); width:56px; height:56px; border-radius:50%; background:rgba(12,14,20,.55); border:1.5px solid rgba(255,255,255,.6); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; opacity:.9; transition:transform .4s cubic-bezier(.2,.7,.2,1), opacity .4s ease, background .4s ease;">
+            <span style="display:block; width:0; height:0; margin-left:4px; border-top:9px solid transparent; border-bottom:9px solid transparent; border-left:15px solid #fff;"></span>
+          </span>
+        </div>
+        <div data-vidinfo style="display:flex; flex-direction:column; gap:10px; padding:18px 18px 20px; opacity:.8; transition:opacity .45s ease;">
+          <h3 style="font-family:'Instrument Serif',serif; font-weight:400; font-size:22px; line-height:1.12; margin:0; color:#f4f1e9;">{{ v.title }}</h3>
+          <div style="display:flex; align-items:center; gap:9px; font-size:13px; color:#9a968d;">
+            <span style="color:#c9c6bd; font-weight:500;">{{ v.date }}</span>
+            <span style="width:3px; height:3px; border-radius:50%; background:#5c5952;"></span>
+            <span>{{ v.location }}</span>
+          </div>
+        </div>
+      </a>
+    </sc-for>
+  </div>
+
+  <!-- PAGER -->
+  <sc-if value="{{ hasPager }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex; align-items:center; justify-content:center; gap:20px; margin-top:38px;">
+      <button onClick="{{ onVidPrev }}" disabled="{{ prevDisabled }}" data-vidnav="" style="display:flex; align-items:center; gap:9px; padding:11px 20px; border-radius:999px; border:1px solid rgba(255,255,255,.14); background:transparent; color:#e9e6dd; font-family:inherit; font-size:13.5px; font-weight:600; cursor:pointer; transition:all .3s ease;">
+        <span style="display:block; width:0; height:0; border-top:5px solid transparent; border-bottom:5px solid transparent; border-right:7px solid currentColor;"></span>Prev
+      </button>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <sc-for list="{{ pageDots }}" as="d" hint-placeholder-count="2">
+          <span data-dot-on="{{ d.on }}" style="width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.22);"></span>
+        </sc-for>
+      </div>
+      <button onClick="{{ onVidNext }}" disabled="{{ nextDisabled }}" data-vidnav="" style="display:flex; align-items:center; gap:9px; padding:11px 20px; border-radius:999px; border:1px solid rgba(122,152,232,.4); background:linear-gradient(135deg,#7d99e6,#4d69ba); color:#fff; font-family:inherit; font-size:13.5px; font-weight:600; cursor:pointer; transition:all .3s ease;">
+        Next<span style="display:block; width:0; height:0; border-top:5px solid transparent; border-bottom:5px solid transparent; border-left:7px solid currentColor;"></span>
+      </button>
+    </div>
+  </sc-if>
+
+  <!-- VIDEO MODAL -->
+  <sc-if value="{{ videoModal }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeVideo }}" style="position:fixed; inset:0; z-index:100; display:flex; align-items:center; justify-content:center; padding:5vw; background:rgba(6,7,10,.9); backdrop-filter:blur(14px); animation:wp-fadeup .3s ease;">
+      <div onClick="{{ stopProp }}" style="position:relative; width:100%; max-width:860px;">
+        <button onClick="{{ closeVideo }}" style="position:absolute; top:-46px; right:0; display:flex; align-items:center; gap:8px; background:transparent; border:none; color:#c9c6bd; font-family:inherit; font-size:13px; font-weight:600; letter-spacing:.02em; cursor:pointer;">Close <span style="display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; border:1px solid rgba(255,255,255,.25); font-size:16px; line-height:1;">×</span></button>
+        <div style="position:relative; aspect-ratio:16/9; border-radius:18px; overflow:hidden; border:1px solid rgba(255,255,255,.12); box-shadow:0 40px 110px -30px rgba(0,0,0,.85); background:#05060a;">
+          <img src="{{ videoModal.thumb }}" alt="{{ videoModal.title }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(.42) saturate(.9);">
+          <div style="position:absolute; inset:0; background:radial-gradient(120% 100% at 50% 40%, rgba(6,7,11,.35), rgba(6,7,11,.86));"></div>
+          <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:22px; text-align:center; padding:24px;">
+            <div style="display:flex; flex-direction:column; gap:9px; max-width:34ch;">
+              <div style="display:flex; align-items:center; justify-content:center; gap:11px; white-space:nowrap;">
+                <span style="font-size:10.5px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:#9db4f0;">{{ videoModal.catLabel }}</span>
+                <span style="width:3px; height:3px; border-radius:50%; background:#5c5952; flex:0 0 auto;"></span>
+                <span style="font-size:12.5px; color:#b7b3aa;">{{ videoModal.date }} · {{ videoModal.location }}</span>
+              </div>
+              <h3 style="font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(26px,3.4vw,40px); line-height:1.08; margin:0; color:#f4f1e9;">{{ videoModal.title }}</h3>
+            </div>
+            <a href="{{ videoModal.url }}" target="_blank" rel="noopener" onClick="{{ closeVideo }}" style="display:inline-flex; align-items:center; gap:11px; padding:15px 28px; border-radius:999px; border:1px solid transparent; background:linear-gradient(135deg,#7d99e6,#4d69ba); color:#fff; text-decoration:none; font-size:15px; font-weight:600; letter-spacing:.01em; white-space:nowrap; box-shadow:0 18px 44px -16px rgba(77,105,186,.8); transition:transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s ease;" style-hover="transform:translateY(-2px); box-shadow:0 24px 54px -16px rgba(77,105,186,.95);"><span style="display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:50%; background:rgba(255,255,255,.18);"><span style="display:block; width:0; height:0; margin-left:3px; border-top:7px solid transparent; border-bottom:7px solid transparent; border-left:11px solid #fff;"></span></span>Watch on YouTube <span style="font-size:15px;">↗</span></a>
+            <span style="font-size:12px; color:#8b8f88;">Opens in a new tab</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</section>
+
+<!-- ===================== PAST SPEAKERS + BACKGROUND CHECK ===================== -->
+<section id="speakers" style="position:relative; z-index:1; background:rgba(12,13,18,.82); border-top:1px solid rgba(255,255,255,.06); border-bottom:1px solid rgba(255,255,255,.06);">
+  <div style="max-width:1200px; margin:0 auto; padding:130px 40px;">
+    <div data-reveal="" style="display:flex; align-items:center; gap:12px; font-size:12px; font-weight:600; letter-spacing:.24em; text-transform:uppercase; color:#7a98e8; margin-bottom:26px;">
+      <span style="width:28px; height:1px; background:#7a98e8; opacity:.7;"></span>Past Speakers · Vetted &amp; Verified
+    </div>
+    <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:24px; margin-bottom:56px;">
+      <h2 data-reveal="" style="font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(34px,4.6vw,62px); line-height:1.03; letter-spacing:-.01em; margin:0; max-width:18ch; color:#f4f1e9;">The company you'll <em style="font-style:italic; color:#7a98e8;">keep.</em></h2>
+      <p data-reveal="" style="font-size:16px; line-height:1.6; color:#a9a59c; max-width:42ch; margin:0;">Every past speaker is a verified operator — identity confirmed, background checked, credentials validated. That standard is why the lineup means something.</p>
+    </div>
+    <sc-if value="{{ isGrid }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:22px;">
+        <button data-spkfilter="all" onClick="{{ onSpkFilter }}" style="padding:9px 18px; border-radius:999px; border:1px solid transparent; background:linear-gradient(135deg,#7d99e6,#4d69ba); color:#f4f1e9; font-family:inherit; font-size:13px; font-weight:600; letter-spacing:.02em; cursor:pointer; transition:background .35s ease, color .35s ease, border-color .35s ease;">All</button>
+        <button data-spkfilter="catalyst" onClick="{{ onSpkFilter }}" style="padding:9px 18px; border-radius:999px; border:1px solid rgba(255,255,255,.14); background:transparent; color:#a9a59c; font-family:inherit; font-size:13px; font-weight:600; letter-spacing:.02em; cursor:pointer; transition:background .35s ease, color .35s ease, border-color .35s ease;">Catalyst Series</button>
+        <button data-spkfilter="sports" onClick="{{ onSpkFilter }}" style="padding:9px 18px; border-radius:999px; border:1px solid rgba(255,255,255,.14); background:transparent; color:#a9a59c; font-family:inherit; font-size:13px; font-weight:600; letter-spacing:.02em; cursor:pointer; transition:background .35s ease, color .35s ease, border-color .35s ease;">World of Sports</button>
+        <button data-spkfilter="wh" onClick="{{ onSpkFilter }}" style="padding:9px 18px; border-radius:999px; border:1px solid rgba(255,255,255,.14); background:transparent; color:#a9a59c; font-family:inherit; font-size:13px; font-weight:600; letter-spacing:.02em; cursor:pointer; transition:background .35s ease, color .35s ease, border-color .35s ease;">Wellness House</button>
+      </div>
+      <div data-spkgrid style="display:grid; grid-template-columns:repeat(5,1fr); gap:16px; animation:wp-gridin .5s cubic-bezier(.2,.7,.2,1);">
+        <sc-for list="{{ gridSpeakers }}" as="p" hint-placeholder-count="10">
+          <button data-scard data-idx="{{ p.idx }}" onClick="{{ setActive }}" onMouseEnter="{{ onScardEnter }}" onMouseLeave="{{ onScardLeave }}" style="position:relative; padding:0; border-radius:16px; overflow:hidden; aspect-ratio:3/4; cursor:pointer; font-family:inherit; background:#101218; border:1px solid rgba(255,255,255,.08); transition:transform .45s cubic-bezier(.2,.7,.2,1), border-color .45s ease, box-shadow .45s ease;" style-active="transform:scale(.97)">
+            <img data-scimg src="{{ p.img }}" alt="{{ p.name }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(.62) saturate(.85); transition:transform .85s cubic-bezier(.2,.7,.2,1), filter .5s ease;">
+            <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(8,9,13,.92) 8%, rgba(8,9,13,.15) 55%, transparent);"></div>
+            <sc-if value="{{ showVetting }}" hint-placeholder-val="{{ true }}">
+              <div style="position:absolute; top:12px; right:12px; display:flex; align-items:center; gap:7px; padding:5px 12px 5px 6px; border-radius:999px; background:linear-gradient(135deg, rgba(28,58,40,.72), rgba(14,34,24,.72)); border:1px solid rgba(74,214,138,.6); backdrop-filter:blur(8px); box-shadow:0 0 18px rgba(52,211,133,.4); font-size:10px; font-weight:700; letter-spacing:.12em; color:#e6fff0;"><span style="display:flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; background:linear-gradient(135deg,#5cf0a0,#22b866); animation:wp-verifypulse 2.4s ease-in-out infinite;"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#06210f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></span>VERIFIED</div>
+            </sc-if>
+            <div data-scinfo style="position:absolute; left:16px; right:16px; bottom:16px; text-align:left; opacity:.78; transition:opacity .45s ease;">
+              <div style="font-size:17px; font-weight:600; color:#f4f1e9; margin-bottom:2px;">{{ p.name }}</div>
+              <div style="font-size:12.5px; color:#a9a59c;">{{ p.brand }}</div>
+              <div data-scview style="display:inline-flex; align-items:center; gap:6px; margin-top:10px; font-size:12px; font-weight:600; color:#9db4f0; opacity:0; transform:translateY(6px); transition:opacity .4s ease, transform .4s ease;">View background <span style="font-size:13px;">→</span></div>
+            </div>
+          </button>
+        </sc-for>
+      </div>
+      <sc-if value="{{ hasSpkPager }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; align-items:center; justify-content:center; gap:20px; margin-top:34px;">
+          <button onClick="{{ onSpkPrev }}" disabled="{{ spkPrevDisabled }}" data-spknav="" style="display:flex; align-items:center; gap:9px; padding:11px 20px; border-radius:999px; border:1px solid rgba(255,255,255,.14); background:transparent; color:#e9e6dd; font-family:inherit; font-size:13.5px; font-weight:600; cursor:pointer; transition:all .3s ease;">
+            <span style="display:block; width:0; height:0; border-top:5px solid transparent; border-bottom:5px solid transparent; border-right:7px solid currentColor;"></span>Prev
+          </button>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <sc-for list="{{ spkPageDots }}" as="d" hint-placeholder-count="2">
+              <span data-spkdot-on="{{ d.on }}" style="width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.22);"></span>
+            </sc-for>
+          </div>
+          <button onClick="{{ onSpkNext }}" disabled="{{ spkNextDisabled }}" data-spknav="" style="display:flex; align-items:center; gap:9px; padding:11px 20px; border-radius:999px; border:1px solid rgba(122,152,232,.4); background:linear-gradient(135deg,#7d99e6,#4d69ba); color:#fff; font-family:inherit; font-size:13.5px; font-weight:600; cursor:pointer; transition:all .3s ease;">
+            Next<span style="display:block; width:0; height:0; border-top:5px solid transparent; border-bottom:5px solid transparent; border-left:7px solid currentColor;"></span>
+          </button>
+        </div>
+      </sc-if>
+    </sc-if>
+
+    <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+      <div style="animation:wp-detailin .55s cubic-bezier(.2,.7,.2,1);">
+      <button onClick="{{ backToGrid }}" style="display:inline-flex; align-items:center; gap:8px; margin-bottom:20px; padding:9px 16px; border-radius:999px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.14); color:#c9c6bd; font-family:inherit; font-size:13px; font-weight:600; cursor:pointer; transition:border-color .3s ease, color .3s ease;" style-hover="border-color:rgba(122,152,232,.5); color:#9db4f0;">← All speakers</button>
+      <div data-feature style="display:flex; flex-direction:column; gap:18px;">
+        <div style="display:grid; grid-template-columns:minmax(300px,360px) minmax(0,1fr); gap:32px; align-items:center; border-radius:22px; border:1px solid rgba(255,255,255,.1); background:linear-gradient(160deg, rgba(255,255,255,.035), rgba(255,255,255,0)); padding:24px;">
+          <div style="position:relative; border-radius:16px; overflow:hidden; border:1px solid rgba(255,255,255,.08); min-height:440px; height:100%;">
+            <img src="{{ feature.img }}" alt="{{ feature.name }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
+            <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(8,9,13,.6), transparent 46%);"></div>
+            <div style="position:absolute; left:14px; bottom:14px; padding:6px 12px; border-radius:999px; background:rgba(10,11,15,.55); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,.14); font-size:11px; font-weight:600; letter-spacing:.06em; color:#e7ecff;">{{ feature.brand }}</div>
+          </div>
+          <div style="display:flex; flex-direction:column; justify-content:center;">
+            <div style="display:flex; align-items:center; gap:10px; font-size:11px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:#7a98e8; margin-bottom:16px;">Verified Speaker <span style="color:#54566a;">·</span> <span style="color:#8b8f88;">{{ featureIndexLabel }}</span></div>
+            <h3 style="font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(32px,3.2vw,44px); line-height:1.02; margin:0 0 8px; color:#f4f1e9;">{{ feature.name }}</h3>
+            <div style="font-size:15px; color:#a9a59c; margin-bottom:20px;">{{ feature.title }}</div>
+            <sc-if value="{{ showVetting }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px;">
+                <span style="display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:999px; background:rgba(140,166,140,.14); border:1px solid rgba(140,166,140,.35); font-size:11.5px; font-weight:600; letter-spacing:.03em; color:#c7d9c2;"><span style="color:#8ca68c;">✓</span> Identity verified</span>
+                <span style="display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:999px; background:rgba(140,166,140,.14); border:1px solid rgba(140,166,140,.35); font-size:11.5px; font-weight:600; letter-spacing:.03em; color:#c7d9c2;"><span style="color:#8ca68c;">✓</span> Operator confirmed</span>
+                <span style="display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:999px; background:rgba(140,166,140,.14); border:1px solid rgba(140,166,140,.35); font-size:11.5px; font-weight:600; letter-spacing:.03em; color:#c7d9c2;"><span style="color:#8ca68c;">✓</span> Background checked</span>
+              </div>
+            </sc-if>
+            <p style="font-size:15.5px; line-height:1.65; color:#cbc7bd; margin:0 0 20px;">{{ feature.bio }}</p>
+            <div style="display:flex; align-items:center; gap:12px; padding:13px 16px; border-radius:12px; background:rgba(122,152,232,.08); border:1px solid rgba(122,152,232,.22); margin-bottom:26px;">
+              <span style="font-size:11px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:#9db4f0; white-space:nowrap;">On Stage</span>
+              <span style="font-size:14px; color:#e0dcd2;">{{ feature.spoke }}</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px;">
+              <button onClick="{{ prevSpeaker }}" aria-label="Previous speaker" style="width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.16); color:#e9e6dd; font-size:18px; cursor:pointer; transition:border-color .3s ease, color .3s ease;" style-hover="border-color:rgba(122,152,232,.6); color:#9db4f0;">←</button>
+              <button onClick="{{ nextSpeaker }}" aria-label="Next speaker" style="width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.16); color:#e9e6dd; font-size:18px; cursor:pointer; transition:border-color .3s ease, color .3s ease;" style-hover="border-color:rgba(122,152,232,.6); color:#9db4f0;">→</button>
+              <span style="font-size:12.5px; color:#8b8f88; letter-spacing:.05em;">Browse the lineup</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
+          <div style="position:relative; aspect-ratio:16/10; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,.08);"><img src="{{ feature.g1 }}" alt="" style="width:100%; height:100%; object-fit:cover;"></div>
+          <div style="position:relative; aspect-ratio:16/10; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,.08);"><img src="{{ feature.g2 }}" alt="" style="width:100%; height:100%; object-fit:cover;"></div>
+          <div style="position:relative; aspect-ratio:16/10; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,.08);"><img src="{{ feature.g3 }}" alt="" style="width:100%; height:100%; object-fit:cover;"></div>
+        </div>
+      </div>
+      <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:22px;">
+        <sc-for list="{{ speakers }}" as="p" hint-placeholder-count="8">
+          <button data-thumb data-idx="{{ p.idx }}" onClick="{{ setActive }}" style="display:flex; align-items:center; gap:11px; padding:8px 17px 8px 8px; border-radius:999px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); cursor:pointer; font-family:inherit; transition:transform .35s ease, border-color .35s ease, background .35s ease, opacity .35s ease;">
+            <img src="{{ p.img }}" alt="{{ p.name }}" style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
+            <span style="text-align:left;">
+              <span style="display:block; font-size:13px; font-weight:600; color:#e9e6dd;">{{ p.name }}</span>
+              <span style="display:block; font-size:11px; color:#8b8f88;">{{ p.brand }}</span>
+            </span>
+          </button>
+        </sc-for>
+      </div>
+      </div>
+    </sc-if>
+  </div>
+</section>
+
+<!-- ===================== VETTING STANDARD ===================== -->
+<section id="vetting" style="position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:130px 40px;">
+  <div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:64px; align-items:center;">
+    <div>
+      <div data-reveal="" style="display:flex; align-items:center; gap:12px; font-size:12px; font-weight:600; letter-spacing:.24em; text-transform:uppercase; color:#8ca68c; margin-bottom:26px;">
+        <span style="width:28px; height:1px; background:#8ca68c; opacity:.8;"></span>The Vetting Standard
+      </div>
+      <h2 data-reveal="" style="font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(32px,4.2vw,56px); line-height:1.05; letter-spacing:-.01em; margin:0 0 22px; color:#f4f1e9;">
+        The room only works because the <em style="font-style:italic; color:#8ca68c;">wrong people aren't in it.</em>
+      </h2>
+      <p data-reveal="" style="font-size:18px; line-height:1.62; color:#b7b3aa; max-width:40ch; margin:0 0 22px;">
+        Bill vets every applicant personally — so the stage you're on is genuinely earned.
+      </p>
+      <div data-reveal="" style="display:flex; align-items:center; gap:14px; padding:18px 20px; border-radius:14px; background:rgba(140,166,140,.08); border:1px solid rgba(140,166,140,.25);">
+        <img src="https://willpowerhq.com/assets/photos/bill-murphy.webp" alt="Bill Murphy" style="width:46px; height:46px; border-radius:50%; object-fit:cover;">
+        <div style="font-size:14.5px; line-height:1.5; color:#cfe0c9;">"Every intro is intentional. The curation is the product." <span style="color:#8b8f88;">— Bill Murphy, Founder</span></div>
+      </div>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:0;">
+      <sc-for list="{{ vetting }}" as="v" hint-placeholder-count="4">
+        <div data-reveal="" data-reveal-delay="{{ v.delay }}" onMouseEnter="{{ onVetEnter }}" onMouseLeave="{{ onVetLeave }}" style="padding:22px 6px; border-bottom:1px solid rgba(255,255,255,.08); cursor:default; transition:background .4s ease;">
+          <div style="display:flex; align-items:center; gap:22px;">
+            <div data-vnum style="min-width:46px; height:46px; border-radius:50%; border:1px solid rgba(140,166,140,.4); display:flex; align-items:center; justify-content:center; font-family:'Instrument Serif',serif; font-size:18px; color:#8ca68c; transition:background .35s ease, border-color .35s ease, color .35s ease;">{{ v.n }}</div>
+            <h3 style="flex:1; font-size:19px; font-weight:600; margin:0; color:#f4f1e9;">{{ v.title }}</h3>
+            <span data-vicon style="display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; font-size:22px; font-weight:300; color:#6f7a6f; line-height:1; transition:transform .45s cubic-bezier(.2,.7,.2,1), color .35s ease;">+</span>
+          </div>
+          <div data-vdesc style="max-height:0; opacity:0; overflow:hidden; transition:max-height .5s cubic-bezier(.2,.7,.2,1), opacity .4s ease;">
+            <p style="font-size:14.5px; line-height:1.58; color:#a9a59c; margin:12px 0 0; padding-left:68px;">{{ v.desc }}</p>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TESTIMONIALS ===================== -->
+<section style="position:relative; z-index:1; background:rgba(12,13,18,.82); border-top:1px solid rgba(255,255,255,.06); border-bottom:1px solid rgba(255,255,255,.06);">
+  <div style="max-width:1200px; margin:0 auto; padding:130px 40px;">
+    <div data-reveal="" style="display:flex; align-items:center; gap:12px; font-size:12px; font-weight:600; letter-spacing:.24em; text-transform:uppercase; color:#7a98e8; margin-bottom:26px;">
+      <span style="width:28px; height:1px; background:#7a98e8; opacity:.7;"></span>What Speakers Say
+    </div>
+    <h2 data-reveal="" style="font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(34px,4.6vw,60px); line-height:1.04; letter-spacing:-.01em; margin:0 0 56px; max-width:20ch; color:#f4f1e9;">Built on <em style="font-style:italic; color:#7a98e8;">real relationships.</em></h2>
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px;">
+      <sc-for list="{{ testimonials }}" as="t" hint-placeholder-count="3">
+        <div data-tcard data-reveal="" data-reveal-delay="{{ t.delay }}" onMouseEnter="{{ onTestEnter }}" onMouseLeave="{{ onTestLeave }}" onMouseMove="{{ onTestMove }}" style="position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between; gap:26px; padding:32px; border-radius:18px; background:rgba(255,255,255,.025); border:1px solid rgba(255,255,255,.08); transition:transform .45s cubic-bezier(.2,.7,.2,1), border-color .45s ease, box-shadow .45s ease;">
+          <span data-tspot style="position:absolute; z-index:0; width:260px; height:260px; border-radius:50%; background:radial-gradient(circle, rgba(122,152,232,.16), transparent 68%); transform:translate(-50%,-50%); opacity:0; transition:opacity .4s ease; pointer-events:none;"></span>
+          <span data-tquote style="position:absolute; top:-22px; right:14px; z-index:0; font-family:'Instrument Serif',serif; font-size:130px; line-height:1; color:rgba(122,152,232,.08); pointer-events:none; transition:color .45s ease, transform .45s cubic-bezier(.2,.7,.2,1);">&ldquo;</span>
+          <p style="position:relative; z-index:1; font-size:16.5px; line-height:1.62; color:#ded9cf; margin:0;">"{{ t.quote }}"</p>
+          <div style="position:relative; z-index:1; display:flex; align-items:center; gap:14px;">
+            <img src="{{ t.img }}" alt="{{ t.name }}" style="width:48px; height:48px; border-radius:50%; object-fit:cover;">
+            <div>
+              <div style="font-size:15px; font-weight:600; color:#f4f1e9;">{{ t.name }}</div>
+              <div style="font-size:12.5px; color:#9a968d;">{{ t.title }}</div>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== THE POOL / TORCH WALL ===================== -->
+<section style="position:relative; z-index:1; overflow:hidden; padding:110px 40px 96px;">
+  <div data-reveal="" style="display:flex; justify-content:center; align-items:center; gap:12px; font-size:12px; font-weight:600; letter-spacing:.24em; text-transform:uppercase; color:#7a98e8; margin-bottom:20px;">
+    <span style="width:28px; height:1px; background:#7a98e8; opacity:.7;"></span>Center Stage<span style="width:28px; height:1px; background:#7a98e8; opacity:.7;"></span>
+  </div>
+  <h2 data-reveal="" style="font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(34px,4.6vw,60px); line-height:1.06; letter-spacing:-.01em; margin:0 auto 14px; color:#f4f1e9; text-align:center;">
+    There's a seat on this stage <em style="font-style:italic; color:#7a98e8;">with your name on it.</em>
+  </h2>
+  <p data-reveal="" style="font-size:17px; line-height:1.55; color:#b7b3aa; max-width:54ch; margin:0 auto 8px; text-align:center;">
+    Fireside conversations — three voices, one room. Pick a name to put them center stage.
+  </p>
+
+  <div data-stage onMouseMove="{{ onStageMove }}" onMouseLeave="{{ onStageLeave }}" style="position:relative; max-width:900px; margin:32px auto 24px; aspect-ratio:2.5/1; border-radius:20px; overflow:hidden; border:1px solid rgba(255,255,255,.1); background:#05060a;">
+    <div style="position:absolute; inset:0; z-index:0; background:radial-gradient(130% 105% at 50% -5%, #161b29 0%, #0b0d15 48%, #05060a 100%);"></div>
+    <div style="position:absolute; inset:0; z-index:0; background:linear-gradient(90deg, rgba(122,152,232,.055), transparent 22%, transparent 78%, rgba(122,152,232,.055));"></div>
+    <img src="https://willpowerhq.com/assets/logos/willpower-logo-white.png" alt="" aria-hidden="true" style="position:absolute; top:25%; left:50%; transform:translate(-50%,-50%); width:min(320px,44%); z-index:1; opacity:.08; filter:grayscale(1) brightness(1.5); pointer-events:none;">
+    <div style="position:absolute; left:0; right:0; bottom:0; height:32%; z-index:1; background:linear-gradient(to top, rgba(122,152,232,.08), transparent); border-top:1px solid rgba(255,255,255,.07);"></div>
+    <div style="position:absolute; left:50%; bottom:50px; transform:translateX(-50%); width:44%; height:62px; z-index:1; background:radial-gradient(ellipse at center, rgba(255,238,205,.16), transparent 70%); filter:blur(5px); pointer-events:none;"></div>
+    <div style="position:absolute; top:-8%; left:50%; transform:translateX(-50%); width:56%; height:118%; z-index:2; background:linear-gradient(to bottom, rgba(255,238,205,.17), rgba(255,238,205,.02) 58%, transparent 78%); clip-path:polygon(43% 0, 57% 0, 100% 100%, 0 100%); mix-blend-mode:screen; pointer-events:none;"></div>
+    <div data-sspot style="position:absolute; inset:0; z-index:2; pointer-events:none; mix-blend-mode:screen; background:radial-gradient(circle 240px at 50% 30%, rgba(255,240,210,.16), transparent 66%); transition:background .18s ease;"></div>
+    <div style="position:absolute; inset:0; z-index:3; pointer-events:none; box-shadow:inset 0 0 120px 30px rgba(5,6,10,.72);"></div>
+    <div data-trio style="position:absolute; left:0; right:0; bottom:64px; z-index:4; display:flex; justify-content:center; align-items:flex-end; gap:38px;">
+      <button data-idx="{{ trioLeftIdx }}" onClick="{{ setStage }}" title="{{ trioLeft.name }}" style="display:flex; flex-direction:column; align-items:center; gap:9px; background:none; border:0; padding:0; cursor:pointer; transform:translateY(14px); opacity:.8; transition:opacity .3s ease, transform .3s ease;" style-hover="opacity:1; transform:translateY(8px);">
+        <div style="width:76px; height:76px; border-radius:50%; overflow:hidden; border:2px solid rgba(255,255,255,.2); box-shadow:0 12px 30px rgba(0,0,0,.6);"><img src="{{ trioLeft.img }}" alt="{{ trioLeft.name }}" style="width:100%; height:100%; object-fit:cover;"></div>
+        <div style="font-size:12px; font-weight:600; color:#e9e6dd; white-space:nowrap;">{{ trioLeft.name }}</div>
+      </button>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+        <div style="position:relative; width:120px; height:120px; border-radius:50%; overflow:hidden; border:2px solid rgba(122,152,232,.75); box-shadow:0 0 46px rgba(255,238,205,.35), 0 16px 44px rgba(0,0,0,.6);"><img src="{{ trioCenter.img }}" alt="{{ trioCenter.name }}" style="width:100%; height:100%; object-fit:cover;"></div>
+        <div style="text-align:center;">
+          <div style="font-family:'Instrument Serif',serif; font-size:23px; color:#f4f1e9; line-height:1;">{{ trioCenter.name }}</div>
+          <div style="font-size:11.5px; color:#9db4f0; margin-top:5px;">{{ trioCenter.brand }} &middot; &ldquo;{{ trioCenter.spoke }}&rdquo;</div>
+        </div>
+      </div>
+      <button data-idx="{{ trioRightIdx }}" onClick="{{ setStage }}" title="{{ trioRight.name }}" style="display:flex; flex-direction:column; align-items:center; gap:9px; background:none; border:0; padding:0; cursor:pointer; transform:translateY(14px); opacity:.8; transition:opacity .3s ease, transform .3s ease;" style-hover="opacity:1; transform:translateY(8px);">
+        <div style="width:76px; height:76px; border-radius:50%; overflow:hidden; border:2px solid rgba(255,255,255,.2); box-shadow:0 12px 30px rgba(0,0,0,.6);"><img src="{{ trioRight.img }}" alt="{{ trioRight.name }}" style="width:100%; height:100%; object-fit:cover;"></div>
+        <div style="font-size:12px; font-weight:600; color:#e9e6dd; white-space:nowrap;">{{ trioRight.name }}</div>
+      </button>
+    </div>
+    <div style="position:absolute; left:0; right:0; bottom:0; z-index:5; display:flex; justify-content:center; align-items:flex-end; pointer-events:none; transform:translateY(12px);">
+      <div style="position:relative; width:96px; height:70px; margin:0 -10px; transform:translateY(24px);"><div style="position:absolute; left:50%; bottom:30px; transform:translateX(-50%); width:40px; height:40px; border-radius:50%; background:#04050a; box-shadow:0 -1px 0 rgba(122,152,232,.3);"></div><div style="position:absolute; left:50%; bottom:0; transform:translateX(-50%); width:96px; height:44px; border-radius:48px 48px 0 0; background:#04050a; box-shadow:inset 0 2px 0 rgba(122,152,232,.14);"></div></div>
+      <div style="position:relative; width:124px; height:70px; margin:0 -10px; transform:translateY(16px);"><div style="position:absolute; left:50%; bottom:32px; transform:translateX(-50%); width:46px; height:46px; border-radius:50%; background:#04050a; box-shadow:0 -1px 0 rgba(122,152,232,.32);"></div><div style="position:absolute; left:50%; bottom:0; transform:translateX(-50%); width:124px; height:46px; border-radius:62px 62px 0 0; background:#04050a; box-shadow:inset 0 2px 0 rgba(122,152,232,.16);"></div></div>
+      <div style="position:relative; width:104px; height:70px; margin:0 -10px; transform:translateY(26px);"><div style="position:absolute; left:50%; bottom:30px; transform:translateX(-50%); width:42px; height:42px; border-radius:50%; background:#04050a; box-shadow:0 -1px 0 rgba(122,152,232,.3);"></div><div style="position:absolute; left:50%; bottom:0; transform:translateX(-50%); width:104px; height:44px; border-radius:52px 52px 0 0; background:#04050a; box-shadow:inset 0 2px 0 rgba(122,152,232,.14);"></div></div>
+      <div style="position:relative; width:136px; height:76px; margin:0 -10px; transform:translateY(12px);"><div style="position:absolute; left:50%; bottom:34px; transform:translateX(-50%); width:50px; height:50px; border-radius:50%; background:#04050a; box-shadow:0 -1px 0 rgba(122,152,232,.34);"></div><div style="position:absolute; left:50%; bottom:0; transform:translateX(-50%); width:136px; height:48px; border-radius:68px 68px 0 0; background:#04050a; box-shadow:inset 0 2px 0 rgba(122,152,232,.18);"></div></div>
+      <div style="position:relative; width:110px; height:70px; margin:0 -10px; transform:translateY(22px);"><div style="position:absolute; left:50%; bottom:30px; transform:translateX(-50%); width:44px; height:44px; border-radius:50%; background:#04050a; box-shadow:0 -1px 0 rgba(122,152,232,.3);"></div><div style="position:absolute; left:50%; bottom:0; transform:translateX(-50%); width:110px; height:44px; border-radius:55px 55px 0 0; background:#04050a; box-shadow:inset 0 2px 0 rgba(122,152,232,.14);"></div></div>
+      <div style="position:relative; width:126px; height:74px; margin:0 -10px; transform:translateY(14px);"><div style="position:absolute; left:50%; bottom:32px; transform:translateX(-50%); width:48px; height:48px; border-radius:50%; background:#04050a; box-shadow:0 -1px 0 rgba(122,152,232,.32);"></div><div style="position:absolute; left:50%; bottom:0; transform:translateX(-50%); width:126px; height:46px; border-radius:63px 63px 0 0; background:#04050a; box-shadow:inset 0 2px 0 rgba(122,152,232,.16);"></div></div>
+      <div style="position:relative; width:100px; height:70px; margin:0 -10px; transform:translateY(25px);"><div style="position:absolute; left:50%; bottom:30px; transform:translateX(-50%); width:42px; height:42px; border-radius:50%; background:#04050a; box-shadow:0 -1px 0 rgba(122,152,232,.3);"></div><div style="position:absolute; left:50%; bottom:0; transform:translateX(-50%); width:100px; height:44px; border-radius:50px 50px 0 0; background:#04050a; box-shadow:inset 0 2px 0 rgba(122,152,232,.14);"></div></div>
+      <div style="position:relative; width:118px; height:72px; margin:0 -10px; transform:translateY(18px);"><div style="position:absolute; left:50%; bottom:31px; transform:translateX(-50%); width:46px; height:46px; border-radius:50%; background:#04050a; box-shadow:0 -1px 0 rgba(122,152,232,.32);"></div><div style="position:absolute; left:50%; bottom:0; transform:translateX(-50%); width:118px; height:45px; border-radius:59px 59px 0 0; background:#04050a; box-shadow:inset 0 2px 0 rgba(122,152,232,.16);"></div></div>
+      <div style="position:relative; width:108px; height:70px; margin:0 -10px; transform:translateY(23px);"><div style="position:absolute; left:50%; bottom:30px; transform:translateX(-50%); width:44px; height:44px; border-radius:50%; background:#04050a; box-shadow:0 -1px 0 rgba(122,152,232,.3);"></div><div style="position:absolute; left:50%; bottom:0; transform:translateX(-50%); width:108px; height:44px; border-radius:54px 54px 0 0; background:#04050a; box-shadow:inset 0 2px 0 rgba(122,152,232,.14);"></div></div>
+    </div>
+  </div>
+
+  <div style="display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:30px;">
+    <sc-for list="{{ speakers }}" as="p" hint-placeholder-count="8">
+      <button data-seat data-idx="{{ p.idx }}" onClick="{{ setStage }}" title="{{ p.name }}" style="width:52px; height:52px; border-radius:50%; padding:0; overflow:hidden; border:2px solid rgba(255,255,255,.12); background:#101218; cursor:pointer; opacity:.7; transition:transform .35s cubic-bezier(.2,.7,.2,1), border-color .35s ease, opacity .35s ease;">
+        <img src="{{ p.img }}" alt="{{ p.name }}" style="width:100%; height:100%; object-fit:cover;">
+      </button>
+    </sc-for>
+    <a href="#apply" style="display:inline-flex; align-items:center; justify-content:center; gap:7px; height:52px; padding:0 20px; border-radius:999px; border:1.5px dashed rgba(122,152,232,.55); color:#9db4f0; font-family:inherit; font-size:13px; font-weight:600; cursor:pointer; transition:background .3s ease, border-color .3s ease;" style-hover="background:rgba(122,152,232,.1); border-color:#9db4f0;">+ Your seat</a>
+  </div>
+</section>
+
+<!-- ===================== APPLY CTA ===================== -->
+<section id="apply" style="position:relative; z-index:1; overflow:hidden;">
+  <img src="https://willpowerhq.com/assets/photos/wh26-619.jpg" alt="" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;">
+  <div style="position:absolute; inset:0; z-index:1; background:linear-gradient(to bottom, rgba(8,9,13,.9), rgba(8,9,13,.78));"></div>
+  <div style="position:relative; z-index:2; max-width:1200px; margin:0 auto; padding:130px 40px;">
+    <div style="max-width:640px; margin:0 auto; text-align:center;">
+      <div data-reveal="" style="display:flex; align-items:center; justify-content:center; gap:12px; font-size:12px; font-weight:600; letter-spacing:.24em; text-transform:uppercase; color:#7a98e8; margin-bottom:26px;">
+        <span style="width:28px; height:1px; background:#7a98e8; opacity:.7;"></span>You're Invited
+      </div>
+      <h2 data-reveal="" style="font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(38px,5.2vw,72px); line-height:1.02; letter-spacing:-.01em; margin:0 0 20px; color:#f4f1e9;">We saved you a <em style="font-style:italic; color:#7a98e8;">spot</em>.</h2>
+      <p data-reveal="" style="font-size:18px; line-height:1.6; color:#c4c0b6; margin:0 0 36px;">We don't run open applications. Every speaker here is hand-picked for the room — and you're one of the few we want on this stage. Leave your details and Bill will personally follow up.</p>
+      <div data-reveal="" style="display:flex; flex-direction:column; gap:14px; padding:30px; border-radius:20px; background:rgba(12,13,18,.72); border:1px solid rgba(255,255,255,.1); backdrop-filter:blur(10px);">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+          <input placeholder="Full name" style="padding:15px 16px; border-radius:11px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.13); color:#f4f1e9; font-family:inherit; font-size:15px; outline:none;" style-focus="border-color:#7a98e8;">
+          <input placeholder="Email" style="padding:15px 16px; border-radius:11px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.13); color:#f4f1e9; font-family:inherit; font-size:15px; outline:none;" style-focus="border-color:#7a98e8;">
+        </div>
+        <input placeholder="Brand / company (and your role)" style="padding:15px 16px; border-radius:11px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.13); color:#f4f1e9; font-family:inherit; font-size:15px; outline:none;" style-focus="border-color:#7a98e8;">
+        <textarea placeholder="What topic would you bring to the room?" rows="3" style="padding:15px 16px; border-radius:11px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.13); color:#f4f1e9; font-family:inherit; font-size:15px; outline:none; resize:vertical;" style-focus="border-color:#7a98e8;"></textarea>
+        <a data-cta="primary" href="https://willpowerhq.com/apply" style="display:inline-flex; align-items:center; justify-content:center; gap:10px; padding:17px 32px; border-radius:11px; background:linear-gradient(135deg,#7d99e6,#4d69ba); color:#f4f1e9; font-weight:600; font-size:16px; margin-top:4px;" style-hover="background:linear-gradient(135deg,#8ea9f0,#5e7bcb);">Yes, I'm interested →</a>
+        <p style="font-size:12.5px; color:#8b8f88; text-align:center; margin:6px 0 0;">By invitation only · Bill follows up personally · No spam, ever.</p>
+      </div>
+      <div data-reveal="" style="display:flex; align-items:center; justify-content:center; gap:14px; margin-top:22px; flex-wrap:wrap;">
+        <span style="font-size:13.5px; color:#8b8f88;">Want the full picture first?</span>
+        <a href="https://willpowerhq.com/" style="display:inline-flex; align-items:center; gap:8px; padding:12px 22px; border-radius:999px; border:1px solid rgba(255,255,255,.22); color:#f4f1e9; font-weight:500; font-size:14px; text-decoration:none;" style-hover="border-color:rgba(255,255,255,.5); background:rgba(255,255,255,.04);">Explore willpowerhq.com →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer style="position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:70px 40px 54px;">
+  <div style="display:flex; flex-wrap:wrap; align-items:flex-start; justify-content:space-between; gap:40px; padding-bottom:44px; border-bottom:1px solid rgba(255,255,255,.08);">
+    <div style="max-width:38ch;">
+      <img src="https://willpowerhq.com/assets/logos/willpower-logo-white.png" alt="Willpower" style="height:26px; width:auto; margin-bottom:20px;">
+      <p style="font-size:14.5px; line-height:1.6; color:#9a968d; margin:0;">The curated community for the founders, operators, and partners building the future of wellness, consumer, and performance. Build better. Be better. Help each other.</p>
+    </div>
+    <div style="display:flex; gap:60px; flex-wrap:wrap;">
+      <div style="display:flex; flex-direction:column; gap:11px;">
+        <div style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#6f726b; margin-bottom:5px;">Explore</div>
+        <a href="#about" style="font-size:14px; color:#c9c6bd;">The Room</a>
+        <a href="#why" style="font-size:14px; color:#c9c6bd;">Why Speak</a>
+        <a href="#speakers" style="font-size:14px; color:#c9c6bd;">Past Speakers</a>
+        <a href="#vetting" style="font-size:14px; color:#c9c6bd;">Vetting Standard</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:11px;">
+        <div style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#6f726b; margin-bottom:5px;">Connect</div>
+        <a href="https://www.instagram.com/billmurphy21/" style="font-size:14px; color:#c9c6bd;">Instagram</a>
+        <a href="https://linkedin.com/company/willpowerbrands" style="font-size:14px; color:#c9c6bd;">LinkedIn</a>
+        <a href="https://www.youtube.com/@willpowerhq" style="font-size:14px; color:#c9c6bd;">YouTube</a>
+        <a href="mailto:bill@willpowerhq.com" style="font-size:14px; color:#c9c6bd;">Contact</a>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; padding-top:26px;">
+    <span style="font-size:13px; color:#6f726b;">© 2026 Willpower. All rights reserved.</span>
+    <a href="#apply" style="font-size:13px; font-weight:600; color:#7a98e8;">I'm Interested →</a>
+  </div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;showParticles&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Atmosphere&quot; },
+  &quot;showGlow&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Atmosphere&quot; },
+  &quot;showGrain&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Atmosphere&quot; },
+  &quot;showVetting&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Content&quot; }
+}">
+class Component extends DCLogic {
+  state = { lightbox: null, active: null, stage: 0, spkFilter: 'all', spkPage: 0, vidFilter: 'all', vidPage: 0, videoModal: null };
+  refreshVidBtns() {
+    const cur = this.state.vidFilter || 'all';
+    document.querySelectorAll('[data-vidfilter]').forEach((b) => {
+      const on = b.getAttribute('data-vidfilter') === cur;
+      b.style.background = on ? 'linear-gradient(135deg,#7d99e6,#4d69ba)' : 'transparent';
+      b.style.borderColor = on ? 'transparent' : 'rgba(255,255,255,.14)';
+      b.style.color = on ? '#fff' : '#a9a59c';
+    });
+    document.querySelectorAll('[data-dot-on]').forEach((d) => {
+      const on = d.getAttribute('data-dot-on') === 'true';
+      d.style.background = on ? '#9db4f0' : 'rgba(255,255,255,.22)';
+      d.style.width = on ? '22px' : '8px';
+      d.style.borderRadius = '999px';
+      d.style.transition = 'all .3s ease';
+    });
+    document.querySelectorAll('[data-vidnav]').forEach((b) => {
+      const dis = b.disabled;
+      b.style.opacity = dis ? '.35' : '1';
+      b.style.pointerEvents = dis ? 'none' : 'auto';
+    });
+  }
+  refreshSpkBtns() {
+    const map = { all: 'linear-gradient(135deg,#7d99e6,#4d69ba)', catalyst: 'linear-gradient(135deg,#7d99e6,#4d69ba)', sports: 'linear-gradient(135deg,#d0655e,#8f3f3b)', wh: 'linear-gradient(135deg,#8fb488,#57794f)' };
+    const cur = this.state.spkFilter || 'all';
+    document.querySelectorAll('[data-spkfilter]').forEach((b) => {
+      const f = b.getAttribute('data-spkfilter');
+      const on = f === cur;
+      b.style.background = on ? map[f] : 'transparent';
+      b.style.color = on ? '#f4f1e9' : '#a9a59c';
+      b.style.borderColor = on ? 'transparent' : 'rgba(255,255,255,.14)';
+    });
+    document.querySelectorAll('[data-spkdot-on]').forEach((d) => {
+      const on = d.getAttribute('data-spkdot-on') === 'true';
+      d.style.background = on ? '#9db4f0' : 'rgba(255,255,255,.22)';
+      d.style.width = on ? '22px' : '8px';
+      d.style.borderRadius = '999px';
+      d.style.transition = 'all .3s ease';
+    });
+    document.querySelectorAll('[data-spknav]').forEach((b) => {
+      b.style.opacity = b.disabled ? '.35' : '1';
+      b.style.pointerEvents = b.disabled ? 'none' : 'auto';
+    });
+  }
+  refreshSeats() {
+    const seats = document.querySelectorAll('[data-seat]');
+    seats.forEach((s) => {
+      const on = +s.getAttribute('data-idx') === (this.state.stage ?? 0);
+      s.style.borderColor = on ? 'rgba(122,152,232,.9)' : 'rgba(255,255,255,.12)';
+      s.style.opacity = on ? '1' : '.7';
+      s.style.transform = on ? 'scale(1.12)' : 'scale(1)';
+    });
+  }
+  componentDidMount() {
+    this.setupReveal();
+    this.setupCount();
+    this.setupButtons();
+    this.refreshThumbs();
+    this.setupParticles();
+    this.refreshSeats();
+    this.refreshSpkBtns();
+    this.refreshVidBtns();
+    this.verifySpeakerClicks();
+  }
+  // Automatic integrity check: confirms every clickable speaker element resolves
+  // (by data-idx) to the exact speaker it is displaying. Runs after every render so
+  // any future desync between shown card and click target is caught immediately.
+  verifySpeakerClicks() {
+    try {
+      const list = this._speakers;
+      if (!list || !list.length) return;
+      const byIdx = (v) => list.find((s) => s.idx === +v);
+      const seen = new Set();
+      for (const s of list) {
+        if (seen.has(s.idx)) { console.error('[speaker-check] duplicate idx ' + s.idx + ' (' + s.name + ')'); return; }
+        seen.add(s.idx);
+      }
+      const problems = [];
+      const check = (sel, getLabel) => {
+        document.querySelectorAll(sel).forEach((el) => {
+          const spk = byIdx(el.getAttribute('data-idx'));
+          const label = getLabel(el);
+          if (!spk) { problems.push(sel + ' data-idx=' + el.getAttribute('data-idx') + ' resolves to no speaker'); return; }
+          if (label && spk.name && label.trim() !== spk.name.trim()) {
+            problems.push(sel + ' shows "' + label + '" but click opens "' + spk.name + '"');
+          }
+        });
+      };
+      check('[data-scard]', (el) => { const i = el.querySelector('img'); return i && i.getAttribute('alt'); });
+      check('[data-seat]', (el) => el.getAttribute('title'));
+      check('[data-thumb]', (el) => { const i = el.querySelector('img'); return i && i.getAttribute('alt'); });
+      if (problems.length) {
+        console.error('[speaker-check] FAILED \u2014 click target mismatch:\n' + problems.join('\n'));
+      } else if (!this._spkCheckOk) {
+        this._spkCheckOk = true;
+        console.info('[speaker-check] OK \u2014 all speaker cards, seats & thumbs open the correct person');
+      }
+    } catch (e) { console.error('[speaker-check] error', e); }
+  }
+  componentWillUnmount() {
+    if (this._pRaf) cancelAnimationFrame(this._pRaf);
+    if (this._pResize) window.removeEventListener('resize', this._pResize);
+  }
+  setupParticles() {
+    const cv = document.querySelector('[data-bgcanvas]');
+    if (!cv || cv.__pInit) return;
+    cv.__pInit = true;
+    if (this._pRaf) cancelAnimationFrame(this._pRaf);
+    if (this._pResize) window.removeEventListener('resize', this._pResize);
+    const ctx = cv.getContext('2d');
+    const colors = ['122,152,232', '157,180,240', '199,217,194', '233,230,221'];
+    let W, H, parts;
+    const resize = () => {
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      W = cv.clientWidth; H = cv.clientHeight;
+      cv.width = W * dpr; cv.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const n = Math.max(28, Math.min(80, Math.round(W * H / 26000)));
+      parts = Array.from({ length: n }, () => ({
+        x: Math.random() * W, y: Math.random() * H,
+        r: Math.random() * 1.6 + 0.5,
+        vx: (Math.random() - 0.5) * 0.12,
+        vy: -(Math.random() * 0.24 + 0.05),
+        a: Math.random() * 0.32 + 0.08,
+        tw: Math.random() * Math.PI * 2,
+        c: colors[Math.floor(Math.random() * colors.length)]
+      }));
+    };
+    resize();
+    this._pResize = resize;
+    window.addEventListener('resize', resize);
+    const tick = () => {
+      ctx.clearRect(0, 0, W, H);
+      for (const p of parts) {
+        p.x += p.vx; p.y += p.vy; p.tw += 0.02;
+        if (p.y < -6) { p.y = H + 6; p.x = Math.random() * W; }
+        if (p.x < -6) p.x = W + 6; if (p.x > W + 6) p.x = -6;
+        const alpha = p.a * (0.55 + 0.45 * Math.sin(p.tw));
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, 6.283);
+        ctx.fillStyle = 'rgba(' + p.c + ',' + alpha + ')';
+        ctx.fill();
+      }
+      this._pRaf = requestAnimationFrame(tick);
+    };
+    this._pRaf = requestAnimationFrame(tick);
+  }
+  componentDidUpdate() {
+    this.setupReveal();
+    this.setupCount();
+    this.setupButtons();
+    this.refreshThumbs();
+    this.setupParticles();
+    this.refreshSeats();
+    this.refreshSpkBtns();
+    this.refreshVidBtns();
+    if (this._lastVidKey !== (this.state.vidFilter + ':' + this.state.vidPage)) {
+      this._lastVidKey = this.state.vidFilter + ':' + this.state.vidPage;
+      const vg = document.querySelector('[data-vidgrid]');
+      if (vg) { vg.style.animation = 'none'; void vg.offsetWidth; vg.style.animation = 'wp-gridin .45s cubic-bezier(.2,.7,.2,1)'; }
+    }
+    if (this._lastSpk !== (this.state.spkFilter + ':' + this.state.spkPage)) {
+      this._lastSpk = this.state.spkFilter + ':' + this.state.spkPage;
+      const g = document.querySelector('[data-spkgrid]');
+      if (g) { g.style.animation = 'none'; void g.offsetWidth; g.style.animation = 'wp-gridin .45s cubic-bezier(.2,.7,.2,1)'; }
+    }
+    if (this._lastStage !== this.state.stage) {
+      this._lastStage = this.state.stage;
+      const tr = document.querySelector('[data-trio]');
+      if (tr) { tr.style.animation = 'none'; void tr.offsetWidth; tr.style.animation = 'wp-bgfade .5s ease'; }
+    }
+    const prev = this._lastActive;
+    if (prev !== this.state.active) {
+      this._lastActive = this.state.active;
+      if (prev != null && this.state.active != null) {
+        const f = document.querySelector('[data-feature]');
+        if (f) { f.style.animation = 'none'; void f.offsetWidth; f.style.animation = 'wp-fadeup .45s cubic-bezier(.2,.7,.2,1)'; }
+      }
+    }
+    this.verifySpeakerClicks();
+  }
+  refreshThumbs() {
+    const thumbs = document.querySelectorAll('[data-thumb]');
+    thumbs.forEach((t) => {
+      const on = +t.getAttribute('data-idx') === (this.state.active ?? 0);
+      t.style.borderColor = on ? 'rgba(122,152,232,.6)' : 'rgba(255,255,255,.08)';
+      t.style.background = on ? 'rgba(122,152,232,.12)' : 'rgba(255,255,255,.03)';
+      t.style.transform = on ? 'translateY(-2px)' : 'none';
+      t.style.opacity = on ? '1' : '.72';
+    });
+  }
+  setupButtons() {
+    const btns = document.querySelectorAll('[data-cta]');
+    btns.forEach((btn) => {
+      if (btn.__wpBtn) return;
+      btn.__wpBtn = true;
+      const ghost = btn.getAttribute('data-cta') === 'ghost';
+      btn.style.position = 'relative';
+      btn.style.overflow = 'hidden';
+      btn.style.transition = 'transform .4s cubic-bezier(.2,.7,.2,1), box-shadow .4s ease, border-color .4s ease, background .4s ease';
+      btn.style.isolation = 'isolate';
+
+      // Lift existing content above the effect layers
+      const content = document.createElement('span');
+      content.style.cssText = 'position:relative; z-index:3; display:inline-flex; align-items:center;';
+      while (btn.firstChild) content.appendChild(btn.firstChild);
+      // wrap trailing arrow so it can nudge
+      if (content.innerHTML.indexOf('\u2192') !== -1) {
+        content.innerHTML = content.innerHTML.replace(/\u2192(?=[^\u2192]*$)/, '<span data-arrow style="display:inline-block; margin-left:7px; transition:transform .35s cubic-bezier(.2,.7,.2,1)">\u2192</span>');
+      }
+      btn.appendChild(content);
+
+      // sheen sweep
+      const sheen = document.createElement('span');
+      sheen.style.cssText = 'position:absolute; top:0; bottom:0; left:-45%; width:40%; z-index:2; background:linear-gradient(105deg, transparent, rgba(255,255,255,' + (ghost ? '.16' : '.55') + '), transparent); transform:skewX(-18deg); pointer-events:none; transition:left .65s cubic-bezier(.2,.7,.2,1);';
+      btn.appendChild(sheen);
+
+      // cursor spotlight
+      const spot = document.createElement('span');
+      spot.style.cssText = 'position:absolute; z-index:1; width:130px; height:130px; border-radius:50%; background:radial-gradient(circle, rgba(255,255,255,' + (ghost ? '.10' : '.32') + '), transparent 66%); transform:translate(-50%,-50%); opacity:0; transition:opacity .3s ease; pointer-events:none; mix-blend-mode:soft-light;';
+      btn.appendChild(spot);
+
+      const arrow = content.querySelector('[data-arrow]');
+
+      btn.addEventListener('mouseenter', () => {
+        btn.style.transform = ghost ? 'translateY(-3px)' : 'translateY(-3px) scale(1.02)';
+        btn.style.boxShadow = ghost
+          ? '0 14px 34px -16px rgba(0,0,0,.7)'
+          : '0 20px 44px -14px rgba(77,105,186,.75), inset 0 0 0 1px rgba(158,180,240,.5)';
+        if (ghost) { btn.style.borderColor = 'rgba(158,180,240,.6)'; btn.style.background = 'rgba(122,152,232,.08)'; }
+        sheen.style.transition = 'left .65s cubic-bezier(.2,.7,.2,1)';
+        sheen.style.left = '130%';
+        spot.style.opacity = '1';
+        if (arrow) arrow.style.transform = 'translateX(5px)';
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transform = 'translateY(0)';
+        btn.style.boxShadow = 'none';
+        if (ghost) { btn.style.borderColor = 'rgba(255,255,255,.22)'; btn.style.background = 'transparent'; }
+        spot.style.opacity = '0';
+        if (arrow) arrow.style.transform = 'translateX(0)';
+        // snap sheen back without animating
+        sheen.style.transition = 'none';
+        sheen.style.left = '-45%';
+        void sheen.offsetWidth;
+      });
+      btn.addEventListener('mousemove', (e) => {
+        const r = btn.getBoundingClientRect();
+        spot.style.left = (e.clientX - r.left) + 'px';
+        spot.style.top = (e.clientY - r.top) + 'px';
+      });
+    });
+  }
+  setupCount() {
+    const scEl = document.querySelector('[data-speakers-num]');
+    if (scEl && this._speakers) {
+      const n = this._speakers.filter((s) => s.name !== 'Bill Murphy').length;
+      scEl.setAttribute('data-count-to', String(n));
+      if (!scEl.__wpCount) scEl.textContent = String(n);
+    }
+    const nums = document.querySelectorAll('[data-count-to]');
+    if (!nums.length) return;
+    if (!this._cio) {
+      this._cio = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { this.animateCount(e.target); this._cio.unobserve(e.target); }
+        });
+      }, { threshold: 0.5 });
+    }
+    nums.forEach(n => { if (!n.__wpCount) { n.__wpCount = true; this._cio.observe(n); } });
+  }
+  animateCount(el) {
+    const to = parseInt(el.getAttribute('data-count-to'), 10);
+    if (isNaN(to)) return;
+    const suf = el.getAttribute('data-suffix') || '';
+    const dur = 1200, start = performance.now();
+    const step = (t) => {
+      const p = Math.min(1, (t - start) / dur);
+      const e = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(to * e) + suf;
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+  setupReveal() {
+    const els = document.querySelectorAll('[data-reveal]');
+    if (!els.length) return;
+    const ease = 'opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1)';
+    els.forEach(el => {
+      if (el.__wpRevealed) return;
+      el.__wpRevealed = true;
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(28px)';
+      el.style.transition = ease;
+      const d = el.getAttribute('data-reveal-delay');
+      if (d) el.style.transitionDelay = d + 'ms';
+    });
+    if (this._io) return;
+    this._io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'none';
+          this._io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    els.forEach(el => this._io.observe(el));
+  }
+
+  renderVals() {
+    const L = 'https://willpowerhq.com/assets/logos/';
+    const P = 'https://willpowerhq.com/assets/photos/';
+    const logos = [
+      L+'brand-ag1-hq.svg', L+'sponsor-yeti-logo.png', L+'brand-whoop-logo.svg',
+      L+'brand-oura.png', L+'brand-hyperice-logo.png', L+'brand-olipop-logo.png',
+      L+'brand-poppi-logo.svg', L+'brand-graza-logo.png', L+'brand-momofuku.png',
+      L+'brand-function-logo.svg', L+'brand-higherdose.png', L+'brand-timeline-logo.svg',
+      L+'brand-david-logo.png', L+'brand-bloom-logo.svg'
+    ];
+    const speakers = [
+      { name: 'Cheryl Sew Hoy', title: 'Founder & CEO · Tiny Health', brand: 'Tiny Health', img: 'assets/speakers/cheryl-sew-hoy.jpg', g1: P+'wh26-520.jpg', g2: P+'wh26-venue-wide.jpg', spoke: 'The gut-health opportunity in family wellness', bio: 'Founder & CEO of Tiny Health, rewriting infant and family health from the gut up. Cheryl reframed how the room thinks about the microbiome — the kind of brand that makes the rest of the room look up.', idx: 0, delay: 0 },
+      { name: 'Greg LaVecchia', title: 'Founder · Bloom', brand: 'Bloom', img: 'assets/speakers/greg-lavecchia.jpg', g1: P+'wh26-341.jpg', g2: P+'catalyst-fireside-wh26.jpg', spoke: 'Building a breakout CPG brand', bio: "Founder of Bloom, one of the fastest-growing CPG brands on the market. Greg's keynote had the entire Wellness House locked in — pure energy, zero ego, all value.", idx: 1, delay: 70 },
+      { name: 'Sam Nebel', title: 'Co-Founder · Goodwipes', brand: 'Goodwipes', img: 'assets/speakers/sam-nebel.jpg', g1: P+'catalyst-159.jpg', g2: P+'wh26-619.jpg', spoke: 'Winning an overlooked category', bio: 'Co-Founder of Goodwipes. Sam turned an unglamorous category into a beloved brand, and brought that same candor to the Willpower stage — panels artfully crafted, connections genuine.', idx: 2, delay: 140 },
+      { name: 'Scott Hickle', title: 'Co-Founder · Throne Science', brand: 'Throne', img: 'assets/speakers/scott-hickle.jpg', g1: P+'human-performance-dinner.jpg', g2: P+'wh26-520.jpg', spoke: 'Health data as a growth engine', bio: 'Co-Founder of Throne, building the future of gut and metabolic health. Incredible founder with incredible ambition — changing the world one colon at a time.', idx: 3, delay: 210 },
+      { name: 'Nicholas Charlier', title: 'GM Americas · Vivobarefoot', brand: 'Vivobarefoot', img: 'assets/speakers/nicholas-charlier.jpg', g1: P+'wh26-morning-run.jpg', g2: P+'wh26-341.jpg', spoke: 'Experiential brand activation', bio: 'GM Americas at Vivobarefoot. Nick brought a 3D foot scanner to the room and hooked the speakers up with Vivos — a masterclass in turning product into experience.', idx: 4, delay: 0 },
+      { name: 'Bryan Guadagno', title: "Co-Founder · It's That Simple", brand: "It's That Simple", img: 'assets/speakers/bryan-guadagno.jpg', g1: P+'catalyst-f1-panel.jpg', g2: P+'wh26-venue-wide.jpg', spoke: 'Product-led community building', bio: "Co-Founder of It's That Simple. A killer operator and speaker — the kind who brings an all-star sushi chef and half-carb rice to the floor and still drops the sharpest insight of the night.", idx: 5, delay: 70 },
+      { name: 'Niccolò Gloazzo', title: 'Sr. Director, Media · Kettle & Fire', brand: 'Kettle & Fire', img: P+'speaker-niccolo-gloazzo.jpg', g1: P+'catalyst-159.jpg', g2: P+'human-performance-dinner.jpg', spoke: 'Paid + omnichannel that scales', bio: 'Sr. Director of Media & Omnichannel at Kettle & Fire. One of the sharpest operators in performance marketing — sees the room two moves ahead.', idx: 6, delay: 140 },
+      { name: 'Bill Murphy', title: 'Founder & Host · Willpower', brand: 'Willpower', img: P+'bill-murphy.webp', g1: P+'wh26-619.jpg', g2: P+'catalyst-fireside-wh26.jpg', spoke: 'Why the room is the product', bio: 'Founder and host of Willpower. Operator-turned-community-builder who personally curates every room and vets every speaker. Every intro is intentional.', idx: 7, delay: 210 },
+      { name: 'Becca McCarthy', title: 'Co-Founder, President & COO · Evolv', brand: 'Evolv', img: 'assets/speakers/becca-mccarthy.jpg', g1: P+'catalyst-159.jpg', g2: P+'catalyst-fireside-wh26.jpg', spoke: 'Product-first retention: if it works, that\u2019s your strategy', bio: 'Co-Founder, President & COO of Evolv, makers of an oral GLP-1 supplement. A relentless operator \u2014 previously COO at House of Athlete \u2014 who cut through the noise on stage: build an obsessive product and retention takes care of itself.', idx: 8, delay: 0 },
+      { name: 'Leala Francis', title: 'SVP, Consumer Product & CX · AG1', brand: 'AG1', img: 'assets/speakers/leala-francis.jpg', g1: P+'wh26-520.jpg', g2: P+'catalyst-159.jpg', spoke: 'Knowing your customer better than anyone', bio: 'SVP of Consumer Product & Customer Experience at AG1. Leala went deep on the insight work behind a premium brand \u2014 defining exactly who the customer is and what erodes their trust before it ever happens.', idx: 9, delay: 70 },
+      { name: 'David Baker', title: 'Chief Revenue Officer · Beekman 1802', brand: 'Beekman 1802', img: 'assets/speakers/david-baker.jpg', g1: P+'catalyst-fireside-wh26.jpg', g2: P+'wh26-619.jpg', spoke: 'Customer relationships as the growth engine', bio: 'Chief Revenue Officer at clean-skincare brand Beekman 1802, with a path through Google and L\u2019Or\u00e9al. David made the case that durable growth in wellness is built on real customer relationships \u2014 tech should sharpen the human touch, not replace it.', idx: 10, delay: 140 },
+      { name: 'Gail Becker', title: 'Founder · CAULIPOWER', brand: 'CAULIPOWER', img: 'assets/speakers/gail-becker.jpg', g1: P+'catalyst-159.jpg', g2: P+'catalyst-fireside-wh26.jpg', spoke: 'Reinventing a category from scratch', bio: 'Founder of CAULIPOWER, who left a top Edelman role to build the best-selling better-for-you frozen brand in the country. A Forbes 50-Over-50 honoree who reminded the room it\u2019s never too late to bet on a bigger idea.', idx: 11, delay: 210 },
+      { name: 'Seth Goldstein', title: 'Co-Founder & President · Ancient Crunch', brand: 'MASA', img: 'assets/speakers/seth-goldstein.jpg', g1: P+'wh26-520.jpg', g2: P+'catalyst-159.jpg', spoke: 'Turning a DTC cult brand into a retail juggernaut', bio: 'Co-Founder & President of Ancient Crunch, the company behind MASA Chips. Seth walked the room through going from a bet between friends to 400,000 bags a month \u2014 half of it on subscription \u2014 without cutting a single corner.', idx: 12, delay: 0 },
+      { name: 'Namita Gupta', title: 'Director, Strategic Partnerships · SoulCycle', brand: 'SoulCycle', img: 'assets/speakers/namita-gupta.jpg', g1: P+'wh26-341.jpg', g2: P+'wh26-619.jpg', spoke: 'Partnerships with real staying power', bio: 'Director of Strategic Partnerships at SoulCycle, with 15+ years building brand collabs across Nasty Gal, Meta, and Pinterest. Namita broke down what separates a partnership that sticks from one that fizzles.', idx: 13, delay: 70 },
+      { name: 'Rick Wittenbraker', title: 'Chief Marketing Officer · Howler Brothers', brand: 'Howler Brothers', img: 'assets/speakers/rick-wittenbraker.jpg', g1: P+'catalyst-f1-panel.jpg', g2: P+'human-performance-dinner.jpg', spoke: 'Building brands people actually love', bio: 'CMO of Howler Brothers and the former marketing force who helped take YETI from local startup to cultural icon. Rick gave a masterclass in authentic, story-first brand building.', idx: 14, delay: 140 },
+      { name: 'Courtney McHugh', title: 'Director, Loyalty & Retention · Kendra Scott', brand: 'Kendra Scott', img: 'assets/speakers/courtney-mchugh.jpg', g1: P+'catalyst-159.jpg', g2: P+'catalyst-fireside-wh26.jpg', spoke: 'Turning customers into a loyal community', bio: 'Director of Loyalty & Retention at Kendra Scott. On the F1-week Catalyst panel, Courtney shared how a beloved brand keeps customers coming back \u2014 turning big cultural moments into lasting loyalty.', idx: 15, delay: 210 },
+      { name: 'Greg Reintjes', title: 'SVP, Head of Marketing · LALO Tequila', brand: 'LALO Tequila', img: 'assets/speakers/greg-reintjes.jpg', g1: P+'catalyst-f1-panel.jpg', g2: P+'wh26-520.jpg', spoke: 'Growing a word-of-mouth brand', bio: 'SVP & Head of Marketing at Austin-based LALO Tequila, following years building brands at Beam Suntory. Greg shared how LALO became one of the fastest-growing tequilas almost entirely on word of mouth.', idx: 16, delay: 0 },
+      { name: 'Kyle Turadek', title: 'Sr. Director, Growth & Ecommerce · Caraway Home', brand: 'Caraway Home', img: 'assets/speakers/kyle-turadek.jpg', g1: P+'wh26-341.jpg', g2: P+'catalyst-159.jpg', spoke: 'Scaling growth without losing the brand', bio: 'Senior Director of Growth & Ecommerce at Caraway Home. Kyle brought the operator\u2019s view to the cultural-tentpoles panel \u2014 how to scale performance and channels while keeping a premium brand feeling premium.', idx: 17, delay: 70 },
+      { name: 'Douglas Gremmen', title: 'Global Managing Director · HYROX', brand: 'HYROX', img: 'assets/speakers/douglas-gremmen.jpg', g1: P+'sports-260.jpg', g2: P+'human-performance-dinner.jpg', spoke: 'Building a global fitness movement', bio: 'Global Managing Director of HYROX, the fitness race exploding into a worldwide phenomenon. Douglas gave the room a front-row look at scaling a real-world community into a global movement.', idx: 18, delay: 140 },
+      { name: 'Megan Lindon', title: 'Sr. Director, Brand & Merchandise · Austin FC', brand: 'Austin FC', img: 'assets/speakers/megan-lindon.jpg', g1: P+'catalyst-f1-panel.jpg', g2: P+'wh26-venue-wide.jpg', spoke: 'Turning fans into a movement', bio: 'Senior Director of Brand & Merchandise at Austin FC. Megan showed how a young club built one of the most rabid fan cultures in American sports \u2014 brand, merch, and matchday as one experience.', idx: 19, delay: 210 },
+      { name: 'Albert Matheny', title: 'Founder & CEO · Promix Nutrition', brand: 'Promix', img: 'assets/speakers/albert-matheny.jpg', g1: P+'human-performance-dinner.jpg', g2: P+'sports-260.jpg', spoke: 'Product obsession as brand strategy', bio: 'Founder & CEO of Promix Nutrition, the athlete-grade supplement brand he started in 2011 and still formulates himself. A registered dietitian and former UF track athlete who preaches that obsessing over product \u2014 no artificial anything \u2014 is the whole strategy.', idx: 20, delay: 0 },
+      { name: 'Jen Batchelor', title: 'Co-Founder & CEO · Kin Euphorics', brand: 'Kin Euphorics', img: 'assets/speakers/jen-batchelor.jpg', g1: P+'catalyst-159.jpg', g2: P+'catalyst-fireside-wh26.jpg', spoke: 'Creating a category from nothing', bio: 'Co-Founder & CEO of Kin Euphorics and the person who effectively invented the \u201ceuphorics\u201d category. The first Latina to raise $15M+ for a beverage brand, she made the room rethink what social drinking can be.', idx: 21, delay: 70 },
+      { name: 'Daniel Goetz', title: 'Founder & CEO · GoodPop', brand: 'GoodPop', img: 'assets/speakers/daniel-goetz.jpg', g1: P+'wh26-341.jpg', g2: P+'wh26-619.jpg', spoke: 'Building a bootstrapped CPG brand', bio: 'Founder & CEO of GoodPop, the Austin B-Corp he started as a UT senior in 2009 and grew to 10,000+ stores and $60M+ in sales \u2014 without ever taking outside funding. Proof that patience and real ingredients beat hype.', idx: 22, delay: 140 },
+      { name: 'Jimmy DeCicco', title: 'Co-Founder · Super Coffee', brand: 'Super Coffee', img: 'assets/speakers/jimmy-decicco.jpg', g1: P+'catalyst-f1-panel.jpg', g2: P+'wh26-520.jpg', spoke: 'Scaling with team and culture', bio: 'Co-Founder of Super Coffee, which he and his two brothers built from a dorm-room blend into a nationwide brand backed by A-Rod and J-Lo. A high-energy operator on grit, culture, and \u201cwork hard, be nice to people.\u201d', idx: 23, delay: 210 },
+      { name: 'Manny Lubin', title: 'Co-Founder & CEO · Slate', brand: 'Slate', img: 'assets/speakers/manny-lubin.jpg', g1: P+'catalyst-159.jpg', g2: P+'human-performance-dinner.jpg', spoke: 'Positioning a challenger brand', bio: 'Co-Founder & CEO of Slate, the high-protein, zero-added-sugar chocolate milk he took from Kickstarter and a Shark Tank rejection to thousands of stores and a UFC partnership. Straight talk on carving out space between the giants.', idx: 24, delay: 0 },
+      { name: 'Robbie Bent', title: 'Co-Founder & CEO · Othership', brand: 'Othership', img: 'assets/speakers/robbie-bent.jpg', g1: P+'wh26-morning-run.jpg', g2: P+'catalyst-fireside-wh26.jpg', spoke: 'Building community as the product', bio: 'Co-Founder & CEO of Othership, the sauna-and-breathwork social bathhouse redefining wellness. A former early Ethereum employee who turned his own recovery into a community built around connection over alcohol.', idx: 25, delay: 70 },
+      { name: 'Paulie Dery', title: 'Chief Marketing Officer · AG1', brand: 'AG1', img: 'assets/speakers/paulie-dery.jpg', g1: P+'wh26-520.jpg', g2: P+'catalyst-159.jpg', spoke: 'Marketing a category-defining brand', bio: 'Chief Marketing Officer at AG1, leading brand for one of the most recognizable names in wellness. Paulie brought a sharp point of view on keeping a category-defining brand feeling personal at scale.', idx: 26, delay: 140 },
+      { name: 'Tatiana Kuzmowycz', title: 'VP, Brand · WHOOP', brand: 'WHOOP', img: 'assets/speakers/tatiana-kuzmowycz.jpg', g1: P+'sports-260.jpg', g2: P+'human-performance-dinner.jpg', spoke: 'Cutting through the noise in a crowded market', bio: 'VP of Brand at WHOOP, leading creative, content, and social for the human-performance company. Tatiana broke down how a brand stays authentic and culturally relevant when the wellness space is more crowded than ever.', idx: 27, delay: 210 },
+      { name: 'Andrew Bott', title: "Co-Founder · It's That Simple", brand: "It's That Simple", img: 'assets/speakers/andrew-bott.jpg', g1: P+'catalyst-159.jpg', g2: P+'wh26-341.jpg', spoke: 'Product-led community building', bio: "Co-Founder of It's That Simple. Andrew joined the Catalyst floor to talk product-led community and building a brand people actually want to belong to.", idx: 28, delay: 0 },
+      { name: 'Emily Jenkins', title: 'Brand Director · Daily Harvest', brand: 'Daily Harvest', img: 'assets/speakers/emily-jenkins.jpg', g1: P+'wh26-341.jpg', g2: P+'wh26-619.jpg', spoke: 'Keeping a brand sharp as it scales', bio: 'Brand Director at Daily Harvest and a CPG brand strategist who came up at Hershey. Emily brought a rigorous, strategy-first view of keeping a beloved food brand craveable and premium as it grows.', idx: 29, delay: 70 },
+      { name: 'Dovas Zakas', title: 'Co-Founder & CMO, The Pets Table · HelloFresh', brand: 'HelloFresh', img: 'assets/speakers/dovas-zakas.jpg', g1: P+'catalyst-f1-panel.jpg', g2: P+'wh26-520.jpg', spoke: 'Launching new brands inside a giant', bio: 'Co-Founder & CMO of The Pets Table by HelloFresh, after building and scaling EveryPlate. Dovas shared how to launch and grow new consumer brands with the speed of a startup and the muscle of a global company.', idx: 30, delay: 140 },
+      { name: 'Derek Majewski', title: 'Sr. Partner Development Manager · Amazon', brand: 'Amazon', img: 'assets/speakers/derek-majewski.jpg', g1: P+'catalyst-159.jpg', g2: P+'catalyst-fireside-wh26.jpg', spoke: 'Winning on the world\u2019s biggest marketplace', bio: 'Senior Partner Development Manager at Amazon. Derek gave founders the retailer\u2019s-eye view \u2014 what actually moves a brand from a listing into a real business on the world\u2019s biggest marketplace.', idx: 31, delay: 210 },
+      { name: 'John Sullivan', title: 'Chief Marketing Officer · WHOOP', brand: 'WHOOP', img: 'assets/speakers/john-sullivan.jpg', g1: P+'sports-260.jpg', g2: P+'human-performance-dinner.jpg', spoke: 'Marketing a performance brand', bio: 'CMO of WHOOP, where he has led marketing since 2017 (after launching Tracksmith). John broke down how you build an omnichannel brand around human performance without losing the athlete\u2019s trust.', idx: 32, delay: 0 },
+      { name: 'Krista Dalton', title: 'CMO & CDO · Tecovas', brand: 'Tecovas', img: 'assets/speakers/krista-dalton.jpg', g1: P+'wh26-520.jpg', g2: P+'catalyst-159.jpg', spoke: 'Scaling a modern heritage brand', bio: 'Chief Marketing & Digital Officer at Tecovas, the direct-to-consumer Western brand. Krista shared how to grow a brand fast while keeping its craft and story intact.', idx: 33, delay: 70 },
+      { name: 'Joe Cannon', title: 'SVP · Hyperice', brand: 'Hyperice', img: 'assets/speakers/joe-cannon.jpg', g1: P+'human-performance-dinner.jpg', g2: P+'sports-260.jpg', spoke: 'Recovery tech as a lifestyle', bio: 'SVP at Hyperice, the recovery-technology brand trusted by pro athletes and teams. Joe spoke to building at the intersection of sports, science, and everyday wellness.', idx: 34, delay: 140 },
+      { name: 'Bill Neff', title: 'Head of Marketing · YETI', brand: 'YETI', img: 'assets/speakers/bill-neff.jpg', g1: P+'catalyst-f1-panel.jpg', g2: P+'wh26-619.jpg', spoke: 'Brand, community, and the future of commerce', bio: 'Head of Marketing at YETI, one of the most admired brands in the outdoor world. Bill shared how storytelling and community turn premium products into a way of life.', idx: 35, delay: 210 },
+      { name: 'Kumkum Pinto', title: 'VP, Product \u2013 Consumer Experience & Technology · Est\u00e9e Lauder', brand: 'Est\u00e9e Lauder', img: 'assets/speakers/kumkum-pinto.jpg', g1: P+'catalyst-159.jpg', g2: P+'wh26-341.jpg', spoke: 'Where product meets consumer experience', bio: 'VP of Product \u2013 Consumer Experience & Technology at The Est\u00e9e Lauder Companies. Kumkum brought the enterprise view of building product and tech experiences worthy of a global beauty brand.', idx: 36, delay: 0 },
+      { name: 'Pranitha Patil', title: 'Co-Founder & CBO · Function Health', brand: 'Function Health', img: 'assets/speakers/pranitha-patil.jpg', g1: P+'wh26-520.jpg', g2: P+'human-performance-dinner.jpg', spoke: 'Building the future of health', bio: 'Co-Founder & Chief Business Officer of Function Health, making comprehensive lab testing accessible to everyone. Pranitha spoke to building the infrastructure behind the preventative-health movement.', idx: 37, delay: 70 },
+      { name: 'Ingrid Milman Cordy', title: 'Chief Marketing Officer · HigherDOSE', brand: 'HigherDOSE', img: 'assets/speakers/ingrid-milman-cordy.jpg', g1: P+'catalyst-fireside-wh26.jpg', g2: P+'wh26-341.jpg', spoke: 'The power of routine', bio: 'CMO of HigherDOSE, the infrared-and-recovery wellness brand, after leading digital and eCommerce at e.l.f. and Nestl\u00e9 Health Science. Ingrid unpacked how ritual and routine build a devoted wellness following.', idx: 38, delay: 140 },
+      { name: 'Eric Hinman', title: 'Athlete, Creator & Founder · Founders Only', brand: 'Founders Only', img: 'assets/speakers/eric-hinman.jpg', g1: P+'wh26-morning-run.jpg', g2: P+'sports-260.jpg', spoke: 'Wellness at the core of community', bio: 'Five-time Ironman turned serial wellness entrepreneur, creator, and angel investor, now behind Founders Only. Eric is a master of building an audience and a brand around an authentic, healthy lifestyle.', idx: 39, delay: 210 },
+      { name: 'Salar Shahini', title: 'Co-Founder & CEO · SweatPals', brand: 'SweatPals', img: 'assets/speakers/salar-shahini.jpg', g1: P+'human-performance-dinner.jpg', g2: P+'wh26-morning-run.jpg', spoke: 'Turning fitness into community', bio: 'Co-Founder & CEO of SweatPals, the platform turning workouts into real-world community. Salar shared how shared sweat becomes the strongest kind of belonging.', idx: 40, delay: 0 },
+      { name: 'Hyla Nayeri', title: 'Co-Founder · 437', brand: '437', img: 'assets/speakers/hyla-nayeri.jpg', g1: P+'catalyst-159.jpg', g2: P+'wh26-520.jpg', spoke: 'Getting scrappy in founder mode', bio: 'Co-Founder of 437, the swimwear-and-apparel brand she built into a cult following through community and content. Hyla brought the scrappy, founder-mode playbook for growing a brand without a big budget.', idx: 41, delay: 70 },
+      { name: 'Connor Michalek', title: 'Founder & CEO · Gevity', brand: 'Gevity', img: 'assets/speakers/connor-michalek.jpg', g1: P+'wh26-morning-run.jpg', g2: P+'catalyst-fireside-wh26.jpg', spoke: 'Wellness at the core of community', bio: 'Founder & CEO of Gevity, the Austin wellness workspace and social club blending coworking, recovery, and community. Connor is reimagining where driven people work, recover, and connect.', idx: 42, delay: 140 },
+      { name: 'Noah Obstfeld', title: 'Host & Founder · Pitch Roast Live', brand: 'Pitch Roast Live', img: 'assets/speakers/noah-obstfeld.jpg', g1: P+'catalyst-fireside-wh26.jpg', g2: P+'catalyst-159.jpg', spoke: 'Comedy break: Pitch Roast Live', bio: 'Founder and host of Pitch Roast Live, the Shark-Tank-meets-comedy-roast show where comedians and VCs roast real founders. Noah brought the room a much-needed laugh between the panels.', idx: 43, delay: 210 },
+      { name: 'Evan Floersch', title: 'Founder · Texas Ranchers', brand: 'Texas Ranchers', img: 'assets/speakers/evan-floersch.jpg', g1: P+'sports-260.jpg', g2: P+'catalyst-f1-panel.jpg', spoke: 'Building brand through sports', bio: 'Founder of Texas Ranchers. Evan joined the sports-and-community panel to talk about building a brand and a fan base from the ground up.', idx: 44, delay: 0 },
+      { name: 'Brian Colbert', title: 'SVP, Global Partnerships · Spurs Sports & Entertainment', brand: 'Spurs', img: 'assets/speakers/brian-colbert.jpg', g1: P+'catalyst-f1-panel.jpg', g2: P+'sports-260.jpg', spoke: 'Building a world through sports', bio: 'SVP of Global Partnerships at Spurs Sports & Entertainment. Brian shared how a storied franchise builds partnerships and community that reach far beyond the court.', idx: 45, delay: 70 },
+      { name: 'Tyler Gaffney', title: 'Former NFL Athlete, Patriots · Investor', brand: 'Patriots', img: 'assets/speakers/tyler-gaffney.jpg', g1: P+'sports-260.jpg', g2: P+'human-performance-dinner.jpg', spoke: 'From the field to investing', bio: 'Former NFL running back (New England Patriots, Stanford) turned investor. Tyler brought the athlete\u2019s-eye view on performance, discipline, and betting on the next generation of brands.', idx: 46, delay: 140 },
+      { name: 'Divya Goel', title: 'VP, Fan Engagement · Williams Racing', brand: 'Williams Racing', img: 'assets/speakers/divya-goel.jpg', g1: P+'catalyst-f1-panel.jpg', g2: P+'sports-260.jpg', spoke: 'Turning a global fanbase into a movement', bio: 'VP of Fan Engagement at Atlassian Williams Racing, after a decade building audiences at the NBA and NFL. Divya broke down how an F1 team turns a screen-first global fanbase into fans who actually show up.', idx: 47, delay: 210 },
+      { name: 'Casey Toohill', title: 'Defensive End · Houston Texans', brand: 'Houston Texans', img: 'assets/speakers/casey-toohill.jpg', g1: P+'sports-260.jpg', g2: P+'human-performance-dinner.jpg', spoke: 'Performance habits from the NFL', bio: "NFL defensive end for the Houston Texans and a Stanford grad who has carved out a long career on the edge. Casey brought the pro athlete's view on the daily habits \u2014 recovery, nutrition, mindset \u2014 that keep a body at its peak.", idx: 48, delay: 0 },
+      { name: 'Jerritt Elliott', title: 'Head Coach · Texas Volleyball', brand: 'Texas Volleyball', img: 'assets/speakers/jerritt-elliott.jpg', g1: P+'sports-260.jpg', g2: P+'catalyst-f1-panel.jpg', spoke: 'Building a championship culture', bio: 'Head coach of Texas Volleyball, where he has built one of the most dominant programs in college sports, national titles included. Jerritt gave a masterclass in culture \u2014 how you recruit, develop, and win at the very top year after year.', idx: 49, delay: 70 },
+      { name: 'Steve Tidball', title: 'Co-Founder & CEO · Vollebak', brand: 'Vollebak', img: 'assets/speakers/steve-tidball.jpg', g1: P+'human-performance-dinner.jpg', g2: P+'sports-260.jpg', spoke: 'Designing clothing from the future', bio: 'Co-Founder & CEO of Vollebak, the brand engineering clothing from graphene, ceramics, and materials that sound like science fiction. Steve had the room rethinking what a product can be when you design for a hundred years out.', idx: 50, delay: 140 },
+      { name: 'Tommy Wood', title: 'Neuroscientist · University of Washington', brand: 'UW', img: 'assets/speakers/tommy-wood.jpg', g1: P+'human-performance-dinner.jpg', g2: P+'wh26-morning-run.jpg', spoke: 'The science of a resilient brain', bio: 'Neuroscientist at the University of Washington and one of the sharpest voices on brain health and human performance. Dr. Wood cut through the longevity noise with what the science actually says about staying sharp for life.', idx: 51, delay: 210 },
+      { name: 'Antti Kontsas', title: 'Head of Motorsport Performance · Hintsa', brand: 'Hintsa', img: 'assets/speakers/antti-kontsas.jpg', g1: P+'catalyst-f1-panel.jpg', g2: P+'human-performance-dinner.jpg', spoke: 'How F1 champions are built', bio: 'Head of Motorsport Performance at Hintsa, the physiologist behind years of Formula 1 world-championship preparation. Antti showed the room what elite performance really takes \u2014 long after the cameras switch off.', idx: 52, delay: 0 },
+      { name: 'Craig Lyon', title: 'SVP, Brand Marketing · Nutrabolt', brand: 'Nutrabolt', img: 'assets/speakers/craig-lyon.jpg', g1: P+'sports-260.jpg', g2: P+'catalyst-f1-panel.jpg', spoke: 'Marketing at the speed of sport', bio: "SVP of Brand Marketing at Nutrabolt, home of C4 Energy, after years shaping Nike Basketball's biggest athlete stories. Craig broke down how you build a performance brand that athletes \u2014 pros and weekend warriors alike \u2014 actually trust.", idx: 53, delay: 70 },
+      { name: 'Seth Hart', title: 'SVP, Integrated Partnerships · FloSports', brand: 'FloSports', img: 'assets/speakers/seth-hart.jpg', g1: P+'sports-260.jpg', g2: P+'human-performance-dinner.jpg', spoke: 'Monetizing passionate fan communities', bio: 'SVP of Integrated Partnerships at Austin-based FloSports, serving 20+ underserved sports and their diehard fans. A Twitter and Footballco alum, Seth made the case that deep community beats broad reach every time.', idx: 54, delay: 140 },
+      { name: 'Rob Insinger', title: 'Co-Founder & CRO · Ammortal', brand: 'Ammortal', img: 'assets/speakers/rob-insinger.jpg', g1: P+'human-performance-dinner.jpg', g2: P+'sports-260.jpg', spoke: 'Bio-optimization as the next frontier', bio: 'Co-Founder & Chief Revenue Officer of Ammortal, makers of the Ammortal Chamber that stacks ten recovery technologies into one experience. Rob brought an ambitious, science-forward take on unlocking performance and longevity.', idx: 55, delay: 210 },
+      { name: 'Natasha van der Merwe', title: 'Director of Endurance Sports · RAW Nutrition', brand: 'RAW', img: 'assets/speakers/natasha-van-der-merwe.jpg', g1: P+'wh26-morning-run.jpg', g2: P+'sports-260.jpg', spoke: 'Fueling endurance at the elite level', bio: 'Director of Endurance Sports at RAW Nutrition, a former pro tennis player and triathlete who has coached over a thousand athletes to Kona and beyond. Natasha spoke to what it truly takes \u2014 training, fueling, consistency \u2014 to go the distance.', idx: 56, delay: 0 },
+      { name: 'Sten Stray-Gundersen', title: 'Exercise Physiologist · University of South Carolina', brand: 'South Carolina', img: 'assets/speakers/sten-stray-gundersen.jpg', g1: P+'human-performance-dinner.jpg', g2: P+'wh26-morning-run.jpg', spoke: 'The science of training smarter', bio: 'Exercise-science professor at the University of South Carolina researching blood-flow restriction and how the body adapts to stress \u2014 carrying forward a family legacy in altitude and performance science. Sten gave the room the evidence behind training smarter, not just harder.', idx: 57, delay: 70 },
+      { name: 'Lauren Betzing', title: 'Co-Founder & Chief Strategy Officer · Evolve', brand: 'Evolve', img: 'assets/speakers/lauren-betzing.jpg', g1: P+'human-performance-dinner.jpg', g2: P+'catalyst-f1-panel.jpg', spoke: 'Technology at the edge of human potential', bio: 'Co-Founder & Chief Strategy Officer of Evolve, building a biosensing headset that turns real-time brain and body data into sharper focus and calmer states. With a background in neuroscience and public health, Lauren connected cutting-edge science to what performance feels like from the inside.', idx: 58, delay: 140 },
+      { name: 'Siu-Anne Gill', title: 'Founder · DriveFlow AI', brand: 'DriveFlow AI', img: 'assets/speakers/siu-anne-gill.jpg', g1: P+'catalyst-f1-panel.jpg', g2: P+'sports-260.jpg', spoke: 'Where the mind meets the machine', bio: 'A motorsport veteran of nearly four decades now behind DriveFlow AI, which pairs neuroscience, AI, and telemetry to sharpen driver performance. Siu-Anne made the case that the next era of racing will be won in the mind, not just the machine.', idx: 59, delay: 210 },
+      { name: 'Bill Powell', title: 'Co-Founder & Managing Partner · Anthropy Partners', brand: 'Anthropy Partners', img: 'assets/speakers/bill-powell.jpg', g1: P+'human-performance-dinner.jpg', g2: P+'sports-260.jpg', spoke: 'Investing in human performance', bio: "Co-Founder & Managing Partner of Anthropy Partners, backing early-stage deeptech at the convergence of neuroscience, wearables, and human performance. Bill gave founders the investor's lens on where the next wave of performance breakthroughs will come from.", idx: 60, delay: 0 }
+    ];
+    // Default order = company prominence: brand recognition + revenue/scale, biggest first. Bill Murphy (host) stays last.
+    const rankOrder = ['Derek Majewski', 'Kumkum Pinto', 'Dovas Zakas', 'Bill Neff', 'Tatiana Kuzmowycz', 'John Sullivan', 'Leala Francis', 'Paulie Dery', 'Divya Goel', 'Casey Toohill', 'Brian Colbert', 'Megan Lindon', 'Tyler Gaffney', 'Craig Lyon', 'Pranitha Patil', 'Joe Cannon', 'Douglas Gremmen', 'Courtney McHugh', 'Namita Gupta', 'Jimmy DeCicco', 'Greg LaVecchia', 'Emily Jenkins', 'Seth Hart', 'Krista Dalton', 'Rick Wittenbraker', 'Nicholas Charlier', 'Jerritt Elliott', 'Tommy Wood', 'Sten Stray-Gundersen', 'Gail Becker', 'Daniel Goetz', 'Niccolò Gloazzo', 'Sam Nebel', 'Antti Kontsas', 'Steve Tidball', 'Manny Lubin', 'Jen Batchelor', 'Ingrid Milman Cordy', 'Albert Matheny', 'Natasha van der Merwe', 'Greg Reintjes', 'Kyle Turadek', 'David Baker', 'Seth Goldstein', 'Becca McCarthy', 'Rob Insinger', 'Lauren Betzing', 'Bill Powell', 'Robbie Bent', 'Salar Shahini', 'Siu-Anne Gill', 'Hyla Nayeri', 'Cheryl Sew Hoy', 'Scott Hickle', 'Bryan Guadagno', 'Andrew Bott', 'Connor Michalek', 'Eric Hinman', 'Evan Floersch', 'Noah Obstfeld', 'Bill Murphy'];
+    speakers.sort((a, b) => ((rankOrder.indexOf(a.name) + 1) || 999) - ((rankOrder.indexOf(b.name) + 1) || 999));
+    this._speakers = speakers;
+    const gpool = [P+'wh26-venue-wide.jpg', P+'catalyst-159.jpg', P+'wh26-341.jpg', P+'sports-260.jpg', P+'catalyst-f1-panel.jpg', P+'human-performance-dinner.jpg', P+'wh26-520.jpg', P+'wh26-morning-run.jpg', P+'catalyst-fireside-wh26.jpg', P+'wh26-619.jpg'];
+    speakers.forEach((s, i) => { if (!s.g3) s.g3 = gpool[(i + 4) % gpool.length]; });
+    const rawActive = this.state.active;
+    const isDetail = rawActive != null;
+    const activePos = rawActive == null ? 0 : Math.max(0, speakers.findIndex((s) => s.idx === rawActive));
+    const feature = speakers[activePos] || speakers[0];
+    const featureIndexLabel = String(activePos + 1).padStart(2, '0') + ' / ' + String(speakers.length).padStart(2, '0');
+    const sN = speakers.length;
+    const sC = Math.max(0, speakers.findIndex((s) => s.idx === (this.state.stage ?? 0)));
+    const trioCenter = speakers[sC] || speakers[0];
+    const trioLeft = speakers[(sC - 1 + sN) % sN];
+    const trioRight = speakers[(sC + 1) % sN];
+    const catalystNames = new Set(['Niccolò Gloazzo', 'Becca McCarthy', 'Leala Francis', 'David Baker', 'Gail Becker', 'Seth Goldstein', 'Namita Gupta', 'Rick Wittenbraker', 'Courtney McHugh', 'Greg Reintjes', 'Kyle Turadek', 'Douglas Gremmen', 'Megan Lindon', 'Albert Matheny', 'Jen Batchelor', 'Daniel Goetz', 'Jimmy DeCicco', 'Manny Lubin', 'Robbie Bent', 'Paulie Dery', 'Tatiana Kuzmowycz', 'Andrew Bott', 'Emily Jenkins', 'Dovas Zakas', 'Derek Majewski']);
+    const sportsNames = new Set(['Divya Goel', 'Casey Toohill', 'Jerritt Elliott', 'Steve Tidball', 'Tommy Wood', 'Antti Kontsas', 'Craig Lyon', 'Seth Hart', 'Rob Insinger', 'Natasha van der Merwe', 'Sten Stray-Gundersen', 'Lauren Betzing', 'Siu-Anne Gill', 'Bill Powell']);
+    speakers.forEach((s) => { s.cat = sportsNames.has(s.name) ? 'sports' : catalystNames.has(s.name) ? 'catalyst' : 'wh'; });
+    const spkFilter = this.state.spkFilter || 'all';
+    const filteredSpeakers = spkFilter === 'all' ? speakers : speakers.filter((s) => s.cat === spkFilter);
+    const SPK_PER_PAGE = 10;
+    const spkTotalPages = Math.max(1, Math.ceil(filteredSpeakers.length / SPK_PER_PAGE));
+    const spkPage = Math.min(this.state.spkPage || 0, spkTotalPages - 1);
+    const gridSpeakers = filteredSpeakers.slice(spkPage * SPK_PER_PAGE, spkPage * SPK_PER_PAGE + SPK_PER_PAGE);
+    const spkPageDots = Array.from({ length: spkTotalPages }, (_, i) => ({ i: i, on: i === spkPage }));
+    const CH = 'https://www.youtube.com/@willpowerhq/videos';
+    const catTag = {
+      catalyst: { catLabel: 'Catalyst Series', tagBg: 'rgba(122,152,232,.28)', tagBorder: 'rgba(158,180,240,.5)' },
+      sports:   { catLabel: 'World of Sports', tagBg: 'rgba(208,101,94,.3)', tagBorder: 'rgba(224,140,132,.55)' },
+      wh:       { catLabel: 'Wellness House', tagBg: 'rgba(139,168,120,.3)', tagBorder: 'rgba(170,196,150,.5)' }
+    };
+    const YT = 'https://www.youtube.com/watch?v=';
+    const T = (id) => 'https://img.youtube.com/vi/' + id + '/hqdefault.jpg';
+    let videos = [
+      { title: 'The Wellness Lounge', date: 'May 20, 2026', location: 'Remedy Place Flatiron · NYC', cat: 'catalyst', img: T('jR2rvyCuJXE'), url: YT+'jR2rvyCuJXE' },
+      { title: 'Wellness House 2026', date: 'March 2026', location: 'East Austin · SXSW', cat: 'wh', img: T('-z8-CuonTcI'), url: YT+'-z8-CuonTcI' },
+      { title: 'Capitalizing on the Future of Wellness', date: 'Nov 10, 2025', location: 'Soho House · NYC', cat: 'catalyst', img: T('G2mtCKvZ3lc'), url: YT+'G2mtCKvZ3lc' },
+      { title: 'World of Sports', date: 'Oct 15, 2025', location: 'Circuit of the Americas · Austin', cat: 'sports', img: P+'sports-260.jpg', url: YT+'yNrT5y7eFPM' },
+      { title: 'Winning Cultural Tentpoles', date: 'Oct 14, 2025', location: 'Austin · F1 Week', cat: 'catalyst', img: P+'catalyst-f1-panel.jpg', url: YT+'oYreMTmoFbQ' },
+      { title: 'Partnerships for Growth', date: 'Aug 19, 2025', location: 'Gevity · Austin', cat: 'catalyst', img: T('g_htiP-DBCs'), url: YT+'g_htiP-DBCs' },
+      { title: 'Building Consumer Trust', date: 'Jul 9, 2025', location: 'Remedy Place · NYC', cat: 'catalyst', img: T('o7uRH4NNgEo'), url: YT+'o7uRH4NNgEo' },
+      { title: 'Customer-Centric Scaling', date: 'Jun 18, 2025', location: 'Remedy Place · NYC', cat: 'catalyst', img: T('-E924KJ6Vcg'), url: YT+'-E924KJ6Vcg' },
+      { title: 'Breakouts & Buyouts', date: 'Apr 16, 2025', location: 'Remedy Place · NYC', cat: 'catalyst', img: T('_Vkkm9QgIvQ'), url: YT+'_Vkkm9QgIvQ' },
+      { title: 'Human Performance Summit', date: 'Mar 9, 2025', location: 'Austin · SXSW', cat: 'sports', img: T('MOaP5rogQVU'), url: YT+'MOaP5rogQVU' },
+      { title: 'Wellness House 2025', date: 'Mar 8, 2025', location: 'East Austin · SXSW', cat: 'wh', img: T('30aSv-OTOSE'), url: YT+'30aSv-OTOSE' },
+      { title: 'Inflection Point', date: 'Feb 5, 2025', location: 'Soho House · Austin', cat: 'catalyst', img: T('XhDOOGA3t_g'), url: YT+'XhDOOGA3t_g' }
+    ];
+    videos = videos.map((v, i) => Object.assign({ idx: i, ytid: v.url.split('v=')[1] }, catTag[v.cat], v));
+    const vidFilter = this.state.vidFilter || 'all';
+    const filteredVideos = vidFilter === 'all' ? videos : videos.filter((v) => v.cat === vidFilter);
+    const PER_PAGE = 6;
+    const totalPages = Math.max(1, Math.ceil(filteredVideos.length / PER_PAGE));
+    const vidPage = Math.min(this.state.vidPage || 0, totalPages - 1);
+    const gridVideos = filteredVideos.slice(vidPage * PER_PAGE, vidPage * PER_PAGE + PER_PAGE);
+    const pageDots = Array.from({ length: totalPages }, (_, i) => ({ i: i, on: i === vidPage }));
+    return {
+      gridVideos,
+      hasPager: totalPages > 1,
+      pageDots,
+      pageLabel: (vidPage + 1) + ' / ' + totalPages,
+      prevDisabled: vidPage <= 0,
+      nextDisabled: vidPage >= totalPages - 1,
+      onVidPrev: () => this.setState((s) => ({ vidPage: Math.max(0, (s.vidPage || 0) - 1) })),
+      onVidNext: () => this.setState((s) => ({ vidPage: Math.min(totalPages - 1, (s.vidPage || 0) + 1) })),
+      onVidFilter: (e) => this.setState({ vidFilter: e.currentTarget.getAttribute('data-vidfilter'), vidPage: 0 }),
+      onVidClick: (e) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
+        e.preventDefault();
+        const c = e.currentTarget;
+        const id = c.getAttribute('data-ytid');
+        this.setState({ videoModal: {
+          thumb: 'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg',
+          url: c.getAttribute('href'),
+          title: c.getAttribute('data-vtitle'),
+          date: c.getAttribute('data-vdate'),
+          location: c.getAttribute('data-vloc'),
+          catLabel: c.getAttribute('data-vcat')
+        } });
+      },
+      closeVideo: () => this.setState({ videoModal: null }),
+      videoModal: this.state.videoModal,
+      onVidEnter: (e) => {
+        const c = e.currentTarget;
+        c.style.transform = 'translateY(-6px)';
+        c.style.borderColor = 'rgba(122,152,232,.4)';
+        c.style.boxShadow = '0 24px 50px -24px rgba(0,0,0,.75)';
+        document.querySelectorAll('[data-vidcard]').forEach((o) => {
+          const oi = o.querySelector('[data-vidimg]'); const om = o.querySelector('[data-vidinfo]');
+          if (o === c) { if (oi) oi.style.filter = 'brightness(1.04) saturate(1.05)'; if (om) om.style.opacity = '1'; }
+          else { if (oi) oi.style.filter = 'brightness(.36) saturate(.72)'; if (om) om.style.opacity = '.5'; }
+        });
+        const img = c.querySelector('[data-vidimg]'); if (img) img.style.transform = 'scale(1.06)';
+        const play = c.querySelector('[data-vidplay]'); if (play) { play.style.transform = 'translate(-50%,-50%) scale(1)'; play.style.opacity = '1'; play.style.background = 'rgba(122,152,232,.9)'; }
+      },
+      onVidLeave: (e) => {
+        const c = e.currentTarget;
+        c.style.transform = 'none';
+        c.style.borderColor = 'rgba(255,255,255,.08)';
+        c.style.boxShadow = 'none';
+        document.querySelectorAll('[data-vidcard]').forEach((o) => {
+          const oi = o.querySelector('[data-vidimg]'); const om = o.querySelector('[data-vidinfo]');
+          if (oi) oi.style.filter = 'brightness(.64) saturate(.88)'; if (om) om.style.opacity = '.8';
+        });
+        const img = c.querySelector('[data-vidimg]'); if (img) img.style.transform = 'scale(1)';
+        const play = c.querySelector('[data-vidplay]'); if (play) { play.style.transform = 'translate(-50%,-50%) scale(.85)'; play.style.opacity = '.9'; play.style.background = 'rgba(12,14,20,.55)'; }
+      },
+      gridSpeakers,
+      hasSpkPager: spkTotalPages > 1,
+      spkPageDots,
+      spkPrevDisabled: spkPage <= 0,
+      spkNextDisabled: spkPage >= spkTotalPages - 1,
+      onSpkPrev: () => this.setState((s) => ({ spkPage: Math.max(0, (s.spkPage || 0) - 1) })),
+      onSpkNext: () => this.setState((s) => ({ spkPage: Math.min(spkTotalPages - 1, (s.spkPage || 0) + 1) })),
+      onSpkFilter: (e) => this.setState({ spkFilter: e.currentTarget.getAttribute('data-spkfilter'), spkPage: 0 }),
+      trioCenter, trioLeft, trioRight,
+      trioLeftIdx: trioLeft.idx,
+      trioRightIdx: trioRight.idx,
+      setStage: (e) => this.setState({ stage: +e.currentTarget.getAttribute('data-idx') }),
+      onStageMove: (e) => {
+        const s = e.currentTarget.querySelector('[data-sspot]');
+        if (!s) return;
+        const r = e.currentTarget.getBoundingClientRect();
+        const x = e.clientX - r.left, y = e.clientY - r.top;
+        s.style.background = 'radial-gradient(circle 230px at ' + x + 'px ' + y + 'px, rgba(255,240,210,.22), transparent 64%)';
+      },
+      onStageLeave: (e) => {
+        const s = e.currentTarget.querySelector('[data-sspot]');
+        if (s) s.style.background = 'radial-gradient(circle 240px at 50% 30%, rgba(255,240,210,.16), transparent 66%)';
+      },
+      speakers,
+      feature,
+      featureIndexLabel,
+      isGrid: !isDetail,
+      isDetail,
+      setActive: (e) => this.setState({ active: +e.currentTarget.getAttribute('data-idx') }),
+      backToGrid: () => this.setState({ active: null }),
+      nextSpeaker: () => this.setState((s) => { const p = Math.max(0, speakers.findIndex((x) => x.idx === s.active)); return { active: speakers[(p + 1) % speakers.length].idx }; }),
+      prevSpeaker: () => this.setState((s) => { const p = Math.max(0, speakers.findIndex((x) => x.idx === s.active)); return { active: speakers[(p - 1 + speakers.length) % speakers.length].idx }; }),
+      onScardEnter: (e) => { const c = e.currentTarget; c.style.transform = 'translateY(-6px)'; c.style.borderColor = 'rgba(122,152,232,.5)'; c.style.boxShadow = '0 22px 50px -24px rgba(77,105,186,.65)'; document.querySelectorAll('[data-scard]').forEach((o) => { const oi = o.querySelector('[data-scimg]'); const om = o.querySelector('[data-scinfo]'); if (o === c) { if (oi) oi.style.filter = 'brightness(1.04) saturate(1.05)'; if (om) om.style.opacity = '1'; } else { if (oi) oi.style.filter = 'brightness(.34) saturate(.7)'; if (om) om.style.opacity = '.45'; } }); const img = c.querySelector('[data-scimg]'); if (img) img.style.transform = 'scale(1.06)'; const v = c.querySelector('[data-scview]'); if (v) { v.style.opacity = '1'; v.style.transform = 'translateY(0)'; } },
+      onScardLeave: (e) => { const c = e.currentTarget; c.style.transform = 'none'; c.style.borderColor = 'rgba(255,255,255,.08)'; c.style.boxShadow = 'none'; document.querySelectorAll('[data-scard]').forEach((o) => { const oi = o.querySelector('[data-scimg]'); const om = o.querySelector('[data-scinfo]'); if (oi) oi.style.filter = 'brightness(.62) saturate(.85)'; if (om) om.style.opacity = '.78'; }); const img = c.querySelector('[data-scimg]'); if (img) img.style.transform = 'scale(1)'; const v = c.querySelector('[data-scview]'); if (v) { v.style.opacity = '0'; v.style.transform = 'translateY(6px)'; } },
+      showParticles: this.props.showParticles ?? true,
+      showGrain: this.props.showGrain ?? true,
+      showGlow: this.props.showGlow ?? true,
+      showVetting: this.props.showVetting ?? true,
+      logosLoop: logos.concat(logos),
+      series: [
+        { tag: '01 / Catalyst Series', title: 'Speaker series, with wellness.', desc: 'Wellness experiences and conversations for 80+ brands at premium venues — Remedy Place NYC, Gevity Austin. Anchored on one topic each night.', where: 'NYC · Austin · 6× / yr', img: P+'catalyst-fireside-wh26.jpg', accent: '#8aa4ee', rgb: '122,152,232', barGrad: 'linear-gradient(90deg,#7d99e6,#4d69ba)', tint: 'linear-gradient(to top, rgba(122,152,232,.30), transparent 58%)', delay: 0 },
+        { tag: '02 / World of Sports', title: 'Sport. Culture. The paddock.', desc: 'Where the paddock meets the operators building next — a premium activation tied to F1 weekend at Circuit of the Americas.', where: 'COTA · Austin · Oct 21', img: P+'sports-cota-aerial.jpg', accent: '#e07a72', rgb: '207,95,91', barGrad: 'linear-gradient(90deg,#d0655e,#8f3f3b)', tint: 'linear-gradient(to top, rgba(207,95,91,.32), transparent 58%)', delay: 90 },
+        { tag: '03 / Wellness House', title: 'Full-send wellness.', desc: 'The flagship. One day, 250+ leaders across wellness, consumer & performance. Keynotes, panels, and 45+ brand activations.', where: 'SXSW · East Austin', img: 'assets/rooms/wellness-house-panel.jpg', accent: '#9fc093', rgb: '143,179,137', barGrad: 'linear-gradient(90deg,#8fb488,#57794f)', tint: 'linear-gradient(to top, rgba(143,179,137,.30), transparent 58%)', delay: 180 }
+      ],
+      benefits: [
+        { n: '01', title: 'A vetted audience', desc: '250+ operators from $10M–$1B+ brands, hand-selected by Bill. No tourists, no vendors nickel-and-diming for your time — just people worth knowing.', delay: 0 },
+        { n: '02', title: 'Real distribution', desc: 'Featured across the Willpower HQ newsletter, our socials, and 45+ partner brands. Your name and your brand, elevated well beyond the room.', delay: 80 },
+        { n: '03', title: 'Curated, not crowded', desc: 'Intimate rooms built for genuine conversation, not panel theater. Speakers routinely stay the whole day because the room keeps them there.', delay: 160 },
+        { n: '04', title: 'The Willpower stamp', desc: 'Join a lineup that is personally vetted end to end. Sharing this stage is a credential — proof you belong in category-defining company.', delay: 240 }
+      ],
+      stats: [
+        { n: '250+', num: 250, suffix: '+', label: 'Leaders in the room', sub: 'WH26 · SXSW · Sold out', delay: 0 },
+        { n: '21', num: 21, suffix: '', label: 'Speakers on stage', sub: 'Wellness House 2026', delay: 80 },
+        { n: '45+', num: 45, suffix: '+', label: 'Brand activations', sub: 'Sponsors · Pop-ups · 2× YoY', delay: 160 },
+        { n: '12+', num: 12, suffix: '+', label: 'Events per year', sub: 'Across 3 signature series', delay: 240 }
+      ],
+      lightbox: this.state.lightbox,
+      onFilter: (e) => {
+        const cat = e.currentTarget.getAttribute('data-filter');
+        document.querySelectorAll('[data-filtertab]').forEach((t) => {
+          const on = t.getAttribute('data-filter') === cat;
+          t.style.background = on ? 'linear-gradient(135deg,#7d99e6,#4d69ba)' : 'transparent';
+          t.style.color = on ? '#f4f1e9' : '#a9a59c';
+          t.style.borderColor = on ? 'transparent' : 'rgba(255,255,255,.14)';
+        });
+        document.querySelectorAll('[data-tile]').forEach((tile) => {
+          const match = cat === 'all' || tile.getAttribute('data-cat') === cat;
+          tile.style.opacity = match ? '1' : '.16';
+          tile.style.filter = match ? 'none' : 'grayscale(1)';
+          tile.style.transform = match ? 'none' : 'scale(.985)';
+        });
+      },
+      onGalleryEnter: (e) => {
+        const c = e.currentTarget;
+        const img = c.querySelector('[data-gimg]'); if (img) img.style.transform = 'scale(1.07)';
+        const view = c.querySelector('[data-view]'); if (view) { view.style.opacity = '1'; view.style.transform = 'scale(1)'; }
+        const meta = c.querySelector('[data-meta]'); if (meta) { meta.style.maxHeight = meta.scrollHeight + 'px'; meta.style.opacity = '1'; meta.style.marginTop = '5px'; }
+      },
+      onGalleryLeave: (e) => {
+        const c = e.currentTarget;
+        const img = c.querySelector('[data-gimg]'); if (img) img.style.transform = 'scale(1)';
+        const view = c.querySelector('[data-view]'); if (view) { view.style.opacity = '0'; view.style.transform = 'scale(.7)'; }
+        const meta = c.querySelector('[data-meta]'); if (meta) { meta.style.maxHeight = '0'; meta.style.opacity = '0'; meta.style.marginTop = '0'; }
+      },
+      onTileClick: (e) => {
+        const t = e.currentTarget;
+        this.setState({ lightbox: {
+          img: t.getAttribute('data-img'),
+          label: t.getAttribute('data-label'),
+          catLabel: t.getAttribute('data-catlabel'),
+          meta: t.getAttribute('data-metatext')
+        } });
+      },
+      closeLightbox: () => this.setState({ lightbox: null }),
+      stopProp: (e) => e.stopPropagation(),
+      onTestEnter: (e) => {
+        const c = e.currentTarget;
+        c.style.transform = 'translateY(-6px)';
+        c.style.borderColor = 'rgba(122,152,232,.4)';
+        c.style.boxShadow = '0 24px 54px -26px rgba(77,105,186,.6)';
+        const q = c.querySelector('[data-tquote]'); if (q) { q.style.color = 'rgba(122,152,232,.28)'; q.style.transform = 'translateY(4px) scale(1.05)'; }
+        const s = c.querySelector('[data-tspot]'); if (s) s.style.opacity = '1';
+      },
+      onTestLeave: (e) => {
+        const c = e.currentTarget;
+        c.style.transform = 'translateY(0)';
+        c.style.borderColor = 'rgba(255,255,255,.08)';
+        c.style.boxShadow = 'none';
+        const q = c.querySelector('[data-tquote]'); if (q) { q.style.color = 'rgba(122,152,232,.08)'; q.style.transform = 'none'; }
+        const s = c.querySelector('[data-tspot]'); if (s) s.style.opacity = '0';
+      },
+      onTestMove: (e) => {
+        const c = e.currentTarget;
+        const s = c.querySelector('[data-tspot]');
+        if (s) { const r = c.getBoundingClientRect(); s.style.left = (e.clientX - r.left) + 'px'; s.style.top = (e.clientY - r.top) + 'px'; }
+      },
+      onVetEnter: (e) => {
+        const c = e.currentTarget;
+        c.style.background = 'linear-gradient(90deg, rgba(140,166,140,.07), transparent)';
+        const num = c.querySelector('[data-vnum]'); if (num) { num.style.background = 'rgba(140,166,140,.18)'; num.style.borderColor = 'rgba(140,166,140,.7)'; num.style.color = '#c7d9c2'; }
+        const icon = c.querySelector('[data-vicon]'); if (icon) { icon.style.transform = 'rotate(45deg)'; icon.style.color = '#8ca68c'; }
+        const desc = c.querySelector('[data-vdesc]'); if (desc) { desc.style.maxHeight = desc.scrollHeight + 'px'; desc.style.opacity = '1'; }
+      },
+      onVetLeave: (e) => {
+        const c = e.currentTarget;
+        c.style.background = 'transparent';
+        const num = c.querySelector('[data-vnum]'); if (num) { num.style.background = 'transparent'; num.style.borderColor = 'rgba(140,166,140,.4)'; num.style.color = '#8ca68c'; }
+        const icon = c.querySelector('[data-vicon]'); if (icon) { icon.style.transform = 'rotate(0deg)'; icon.style.color = '#6f7a6f'; }
+        const desc = c.querySelector('[data-vdesc]'); if (desc) { desc.style.maxHeight = '0'; desc.style.opacity = '0'; }
+      },
+      onSeriesEnter: (e) => {
+        const c = e.currentTarget;
+        const rgb = c.getAttribute('data-rgb') || '122,152,232';
+        c.style.transform = 'translateY(-8px)';
+        c.style.borderColor = 'rgba(' + rgb + ',.5)';
+        c.style.boxShadow = '0 28px 60px -26px rgba(' + rgb + ',.7)';
+        const img = c.querySelector('[data-simg]'); if (img) { img.style.transform = 'scale(1.07)'; img.style.filter = 'brightness(.95) saturate(1.05)'; }
+        const bar = c.querySelector('[data-sbar]'); if (bar) bar.style.transform = 'scaleX(1)';
+        const desc = c.querySelector('[data-sdesc]'); if (desc) { desc.style.maxHeight = desc.scrollHeight + 'px'; desc.style.opacity = '1'; }
+        const view = c.querySelector('[data-sview]'); if (view) { view.style.opacity = '1'; view.style.transform = 'translateX(0)'; }
+      },
+      onSeriesLeave: (e) => {
+        const c = e.currentTarget;
+        c.style.transform = 'translateY(0)';
+        c.style.borderColor = 'rgba(255,255,255,.08)';
+        c.style.boxShadow = 'none';
+        const img = c.querySelector('[data-simg]'); if (img) { img.style.transform = 'scale(1)'; img.style.filter = 'brightness(.72) saturate(.95)'; }
+        const bar = c.querySelector('[data-sbar]'); if (bar) bar.style.transform = 'scaleX(0)';
+        const desc = c.querySelector('[data-sdesc]'); if (desc) { desc.style.maxHeight = '0'; desc.style.opacity = '0'; }
+        const view = c.querySelector('[data-sview]'); if (view) { view.style.opacity = '0'; view.style.transform = 'translateX(-6px)'; }
+      },
+      onBenefitEnter: (e) => {
+        const c = e.currentTarget;
+        c.style.background = 'linear-gradient(160deg, rgba(122,152,232,.09), rgba(122,152,232,.015))';
+        c.style.borderColor = 'rgba(122,152,232,.42)';
+        c.style.boxShadow = '0 20px 46px -22px rgba(77,105,186,.6)';
+        const num = c.querySelector('[data-bnum]'); if (num) num.style.color = '#9db4f0';
+        const icon = c.querySelector('[data-bicon]'); if (icon) { icon.style.transform = 'rotate(45deg)'; icon.style.color = '#9db4f0'; }
+        const desc = c.querySelector('[data-bdesc]');
+        if (desc) { desc.style.maxHeight = desc.scrollHeight + 'px'; desc.style.opacity = '1'; }
+      },
+      onBenefitLeave: (e) => {
+        const c = e.currentTarget;
+        c.style.background = 'rgba(255,255,255,.025)';
+        c.style.borderColor = 'rgba(255,255,255,.07)';
+        c.style.boxShadow = 'none';
+        const num = c.querySelector('[data-bnum]'); if (num) num.style.color = '#7a98e8';
+        const icon = c.querySelector('[data-bicon]'); if (icon) { icon.style.transform = 'rotate(0deg)'; icon.style.color = '#6f7280'; }
+        const desc = c.querySelector('[data-bdesc]');
+        if (desc) { desc.style.maxHeight = '0'; desc.style.opacity = '0'; }
+      },
+      onHeroEnter: (e) => {
+        const c = e.currentTarget;
+        c.style.transform = 'translateY(-5px)';
+        const num = c.querySelector('[data-num]'); if (num) num.style.color = '#9db4f0';
+        const lab = c.querySelector('[data-lab]'); if (lab) lab.style.color = '#cdd3e6';
+        const bar = c.querySelector('[data-hbar]'); if (bar) bar.style.width = '62%';
+      },
+      onHeroLeave: (e) => {
+        const c = e.currentTarget;
+        c.style.transform = 'translateY(0)';
+        const num = c.querySelector('[data-num]'); if (num) num.style.color = '#f4f1e9';
+        const lab = c.querySelector('[data-lab]'); if (lab) lab.style.color = '#918d84';
+        const bar = c.querySelector('[data-hbar]'); if (bar) bar.style.width = '0';
+      },
+      onStatEnter: (e) => {
+        const c = e.currentTarget;
+        c.style.transform = 'translateY(-8px)';
+        c.style.borderColor = 'rgba(122,152,232,.5)';
+        c.style.background = 'linear-gradient(160deg, rgba(122,152,232,.10), rgba(122,152,232,.015))';
+        c.style.boxShadow = '0 24px 55px -22px rgba(77,105,186,.65)';
+        const num = c.querySelector('[data-num]'); if (num) num.style.color = '#9db4f0';
+        const bar = c.querySelector('[data-bar]'); if (bar) bar.style.transform = 'scaleX(1)';
+        const glow = c.querySelector('[data-glow]'); if (glow) glow.style.opacity = '1';
+        const sub = c.querySelector('[data-sub]'); if (sub) sub.style.color = '#b9bcd0';
+      },
+      onStatLeave: (e) => {
+        const c = e.currentTarget;
+        c.style.transform = 'translateY(0)';
+        c.style.borderColor = 'rgba(255,255,255,.08)';
+        c.style.background = 'linear-gradient(160deg, rgba(255,255,255,.03), rgba(255,255,255,0))';
+        c.style.boxShadow = 'none';
+        const num = c.querySelector('[data-num]'); if (num) num.style.color = '#f4f1e9';
+        const bar = c.querySelector('[data-bar]'); if (bar) bar.style.transform = 'scaleX(0)';
+        const glow = c.querySelector('[data-glow]'); if (glow) glow.style.opacity = '0';
+        const sub = c.querySelector('[data-sub]'); if (sub) sub.style.color = '#87897f';
+      },
+      gallery: [
+        { img: P+'wh26-venue-wide.jpg', label: '250+ leaders in the room', cat: 'wh', catLabel: 'Wellness House', meta: 'Austin · SXSW 2026 · Sold out', span: 8, h: 340, delay: 0, idx: 0 },
+        { img: P+'wh26-341.jpg', label: 'Wellness House 2026', cat: 'wh', catLabel: 'Wellness House', meta: 'East Austin · 45+ activations', span: 4, h: 340, delay: 80, idx: 1 },
+        { img: P+'catalyst-159.jpg', label: 'Catalyst Series', cat: 'catalyst', catLabel: 'Catalyst', meta: 'Remedy Place · NYC · 80+ brands', span: 4, h: 300, delay: 0, idx: 2 },
+        { img: P+'sports-260.jpg', label: 'World of Sports', cat: 'sports', catLabel: 'World of Sports', meta: 'Circuit of the Americas · F1 weekend', span: 4, h: 300, delay: 80, idx: 3 },
+        { img: P+'wh26-morning-run.jpg', label: 'Morning movement', cat: 'wh', catLabel: 'Wellness House', meta: 'Austin · The 6am run club', span: 4, h: 300, delay: 160, idx: 4 },
+        { img: P+'catalyst-f1-panel.jpg', label: 'Catalyst · F1 Edition', cat: 'catalyst', catLabel: 'Catalyst', meta: 'Austin · Performance & culture', span: 5, h: 320, delay: 0, idx: 5 },
+        { img: P+'human-performance-dinner.jpg', label: 'Human Performance dinner', cat: 'catalyst', catLabel: 'Catalyst', meta: 'Private roundtable · 24 operators', span: 4, h: 320, delay: 80, idx: 6 },
+        { img: P+'wh26-520.jpg', label: 'Panel discussions', cat: 'wh', catLabel: 'Wellness House', meta: 'Austin · 21 speakers on stage', span: 3, h: 320, delay: 160, idx: 7 }
+      ],
+      vetting: [
+        { n: 'I', title: 'Application review', desc: 'Bill personally reads every submission. Sometimes a quick call, sometimes a yes or no based on what you sent.', delay: 0 },
+        { n: 'II', title: 'Identity & background verification', desc: 'We confirm who you are and run a background check — the same standard for every speaker and every guest in the room.', delay: 80 },
+        { n: 'III', title: 'Credential & brand validation', desc: 'We validate your role and the brand you represent, so the room can trust every name on the lineup.', delay: 160 },
+        { n: 'IV', title: 'Stage readiness', desc: 'We align on your topic and format ahead of time — real conversation, tightly curated, never filler.', delay: 240 }
+      ],
+      testimonials: [
+        { quote: 'The audience bought in. Connections were genuine, panels artfully crafted, no vendors nickel-and-diming you for your time. Truly a 10/10 experience.', name: 'Sam Nebel', title: 'Co-Founder · Goodwipes', img: P+'speaker-sam-nebel.jpg', delay: 0 },
+        { quote: "I was on the first panel and didn't plan to stay long — I ended up there almost the whole day. I walked out with 3–4 real business connections. That's curation.", name: 'Cheryl Sew Hoy', title: 'Founder & CEO · Tiny Health', img: P+'speaker-cheryl-sew-hoy.jpg', delay: 90 },
+        { quote: 'Willpower is the rare room genuinely worth showing up for. Sharp operators, real conversations, no filler. I keep coming back.', name: 'Niccolò Gloazzo', title: 'Kettle & Fire', img: P+'speaker-niccolo-gloazzo.jpg', delay: 180 }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -47,6 +47,23 @@
     [style*="flex-wrap:nowrap"], [style*="flex-wrap: nowrap"] { flex-direction: column !important; width: 100% !important; }
     [style*="flex-wrap:nowrap"] > div, [style*="flex-wrap: nowrap"] > div { width: 100% !important; max-width: 100% !important; flex: 0 0 auto !important; }
     [style*="position:sticky"], [style*="position: sticky"] { position: static !important; }
+
+    /* Past speaker cards: 2-up instead of full-width so the directory doesn't take forever to scroll */
+    [data-spkgrid] { grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
+    [data-scinfo] { left: 10px !important; right: 10px !important; bottom: 10px !important; }
+    [data-scname] { font-size: 13px !important; }
+    [data-scbrand] { font-size: 10px !important; }
+    [data-scbadge] { top: 8px !important; right: 8px !important; padding: 3px 8px 3px 5px !important; gap: 4px !important; font-size: 7px !important; }
+    [data-scbadge] span { width: 11px !important; height: 11px !important; }
+
+    /* Center Stage: the fixed 2.5:1 box is too short once the trio's avatars/names wrap to phone width */
+    [data-stage] { aspect-ratio: auto !important; height: 320px !important; }
+    [data-trio] { gap: 14px !important; }
+    [data-trio] > button > div:first-child { width: 48px !important; height: 48px !important; }
+    [data-trio] > button > div:last-child { font-size: 9.5px !important; }
+    [data-trio] > div > div:first-child { width: 84px !important; height: 84px !important; }
+    [data-trio] > div > div:last-child > div:first-child { font-size: 16px !important; }
+    [data-trio] > div > div:last-child > div:last-child { font-size: 9px !important; }
   }
 </style>
 </helmet>
@@ -327,11 +344,11 @@
             <img data-scimg src="{{ p.img }}" alt="{{ p.name }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(.62) saturate(.85); transition:transform .85s cubic-bezier(.2,.7,.2,1), filter .5s ease;">
             <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(8,9,13,.92) 8%, rgba(8,9,13,.15) 55%, transparent);"></div>
             <sc-if value="{{ showVetting }}" hint-placeholder-val="{{ true }}">
-              <div style="position:absolute; top:12px; right:12px; display:flex; align-items:center; gap:7px; padding:5px 12px 5px 6px; border-radius:999px; background:linear-gradient(135deg, rgba(28,58,40,.72), rgba(14,34,24,.72)); border:1px solid rgba(74,214,138,.6); backdrop-filter:blur(8px); box-shadow:0 0 18px rgba(52,211,133,.4); font-size:10px; font-weight:700; letter-spacing:.12em; color:#e6fff0;"><span style="display:flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; background:linear-gradient(135deg,#5cf0a0,#22b866); animation:wp-verifypulse 2.4s ease-in-out infinite;"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#06210f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></span>VERIFIED</div>
+              <div data-scbadge style="position:absolute; top:12px; right:12px; display:flex; align-items:center; gap:7px; padding:5px 12px 5px 6px; border-radius:999px; background:linear-gradient(135deg, rgba(28,58,40,.72), rgba(14,34,24,.72)); border:1px solid rgba(74,214,138,.6); backdrop-filter:blur(8px); box-shadow:0 0 18px rgba(52,211,133,.4); font-size:10px; font-weight:700; letter-spacing:.12em; color:#e6fff0;"><span style="display:flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; background:linear-gradient(135deg,#5cf0a0,#22b866); animation:wp-verifypulse 2.4s ease-in-out infinite;"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#06210f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></span>VERIFIED</div>
             </sc-if>
             <div data-scinfo style="position:absolute; left:16px; right:16px; bottom:16px; text-align:left; opacity:.78; transition:opacity .45s ease;">
-              <div style="font-size:17px; font-weight:600; color:#f4f1e9; margin-bottom:2px;">{{ p.name }}</div>
-              <div style="font-size:12.5px; color:#a9a59c;">{{ p.brand }}</div>
+              <div data-scname style="font-size:17px; font-weight:600; color:#f4f1e9; margin-bottom:2px;">{{ p.name }}</div>
+              <div data-scbrand style="font-size:12.5px; color:#a9a59c;">{{ p.brand }}</div>
               <div data-scview style="display:inline-flex; align-items:center; gap:6px; margin-top:10px; font-size:12px; font-weight:600; color:#9db4f0; opacity:0; transform:translateY(6px); transition:opacity .4s ease, transform .4s ease;">View background <span style="font-size:13px;">→</span></div>
             </div>
           </button>

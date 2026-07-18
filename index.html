@@ -37,6 +37,17 @@
   @keyframes wp-livedot { 0% { box-shadow: 0 0 0 0 rgba(122,152,232,.7); } 70%, 100% { box-shadow: 0 0 0 7px rgba(122,152,232,0); } }
   @keyframes wp-cardsheen { 0% { transform: translateX(-150%) skewX(-16deg); } 55%, 100% { transform: translateX(340%) skewX(-16deg); } }
   @keyframes wp-ringpulse { 0%, 100% { box-shadow: inset 0 0 0 1px rgba(122,152,232,.32), inset 0 0 22px rgba(122,152,232,.10); } 50% { box-shadow: inset 0 0 0 1px rgba(122,152,232,.7), inset 0 0 34px rgba(122,152,232,.26); } }
+  @media (max-width: 860px) {
+    /* The site has no other responsive rules; every inline grid/nowrap layout below overflows
+       and clips content (nav CTA, hero stats, card grids) on tablet/phone widths. */
+    nav [data-nav-links] { display: none !important; }
+    nav a[data-cta="primary"] { flex-shrink: 0; }
+    nav > a { flex-shrink: 0; }
+    [style*="display:grid"], [style*="display: grid"] { grid-template-columns: 1fr !important; }
+    [style*="flex-wrap:nowrap"], [style*="flex-wrap: nowrap"] { flex-direction: column !important; width: 100% !important; }
+    [style*="flex-wrap:nowrap"] > div, [style*="flex-wrap: nowrap"] > div { width: 100% !important; max-width: 100% !important; flex: 0 0 auto !important; }
+    [style*="position:sticky"], [style*="position: sticky"] { position: static !important; }
+  }
 </style>
 </helmet>
 
@@ -1120,7 +1131,7 @@ class Component extends DCLogic {
       series: [
         { tag: '01 / Catalyst Series', title: 'Speaker series, with wellness.', desc: 'Wellness experiences and conversations for 80+ brands at premium venues — Remedy Place NYC, Gevity Austin. Anchored on one topic each night.', where: 'NYC · Austin · 6× / yr', img: P+'catalyst-fireside-wh26.jpg', accent: '#8aa4ee', rgb: '122,152,232', barGrad: 'linear-gradient(90deg,#7d99e6,#4d69ba)', tint: 'linear-gradient(to top, rgba(122,152,232,.30), transparent 58%)', delay: 0 },
         { tag: '02 / World of Sports', title: 'Sport. Culture. The paddock.', desc: 'Where the paddock meets the operators building next — a premium activation tied to F1 weekend at Circuit of the Americas.', where: 'COTA · Austin · Oct 21', img: P+'sports-cota-aerial.jpg', accent: '#e07a72', rgb: '207,95,91', barGrad: 'linear-gradient(90deg,#d0655e,#8f3f3b)', tint: 'linear-gradient(to top, rgba(207,95,91,.32), transparent 58%)', delay: 90 },
-        { tag: '03 / Wellness House', title: 'Full-send wellness.', desc: 'The flagship. One day, 250+ leaders across wellness, consumer & performance. Keynotes, panels, and 45+ brand activations.', where: 'SXSW · East Austin', img: 'assets/rooms/wellness-house-panel.jpg', accent: '#9fc093', rgb: '143,179,137', barGrad: 'linear-gradient(90deg,#8fb488,#57794f)', tint: 'linear-gradient(to top, rgba(143,179,137,.30), transparent 58%)', delay: 180 }
+        { tag: '03 / Wellness House', title: 'Full-send wellness.', desc: 'The flagship. One day, 250+ leaders across wellness, consumer & performance. Keynotes, panels, and 45+ brand activations.', where: 'SXSW · East Austin', img: P+'wh26-venue-wide.jpg', accent: '#9fc093', rgb: '143,179,137', barGrad: 'linear-gradient(90deg,#8fb488,#57794f)', tint: 'linear-gradient(to top, rgba(143,179,137,.30), transparent 58%)', delay: 180 }
       ],
       benefits: [
         { n: '01', title: 'A vetted audience', desc: '250+ operators from $10M–$1B+ brands, hand-selected by Bill. No tourists, no vendors nickel-and-diming for your time — just people worth knowing.', delay: 0 },
